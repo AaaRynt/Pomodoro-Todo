@@ -10,8 +10,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Chart from "@/pages/chart.vue";
 import Todos from "@/pages/todos.vue";
 import Setting from "@/pages/setting.vue";
+
 const router = createRouter({
-	history: createWebHistory(),
+	history: createWebHistory("/Pomodoro-Todo/"),
 	routes: [
 		{ path: "/", redirect: "/todos" },
 		{ path: "/chart", component: Chart },

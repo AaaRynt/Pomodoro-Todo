@@ -98,12 +98,6 @@ import { pomodoroTime, breakTime, currentTodo, completedTodos } from "@/store/to
 import { getTimeInfo } from "@/utils/getTimeInfo";
 import emojis from "@/assets/emojis.json";
 import quotes from "@/assets/quotes.json";
-import { createRouter, createWebHashHistory } from "vue-router";
-
-const router = createRouter({
-    history: createWebHashHistory(),
-    routes
-});
 
 /* ================== 核心状态 ================== */
 
