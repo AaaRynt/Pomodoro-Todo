@@ -1,0 +1,40 @@
+{
+	"pomodoro": [
+		"Stay sober while striving for better answers.",
+ 		"Stay sober.Seek better answers.",
+ 		"Stay clear. Seek better answers.",
+ 		"Clear mindBetter answers.",
+ 		"Clarity first. Answers follow.",
+ 		"Stay focused. Think precisely.",
+ 		"One task. One answer.",
+ 		"Focus now. Optimize later.",
+ 		"Reduce noise. Increase signal.",
+ 		"Think slowly. Act clean.",
+ 		"Focus on the next small step.",
+ 		"Work calmly. Time is on your side.",
+ 		"Keep simple. Keep it moving.",
+		"Attention beats intensity."
+	],
+	"short": [
+		"Pause briefly. Hydrate, stretch, and return refreshed.",
+ 		"Drink water. Move a little.",
+ 		"Step away. Let thoughts cool.",
+ 		"Relax brieflyNo scrolling.",
+ 		"Stand up. Breathe.",
+ 		"Stand up. Breathe. Reset.",
+ 		"Water, stretch, blink.",
+ 		"Pause is part of progress.",
+		"Let your mind idle foa moment."
+	],
+	"long": [
+		"You’ve finished several focused cycles.Well done!",
+ 		"Lie flat. Recover seriously.",
+ 		"Deep rest. No guilt.",
+ 		"Long break. System reboot.",
+ 		"Rest is part of the plan.",
+ 		"Full stop. Real rest now.",
+ 		"Disconnect to recover.",
+ 		"Nothing to solve right now.",
+		"Rest is a system requirement"
+	]
+}

@@ -15,8 +15,9 @@ try {
 	if (raw) {
 		initial = { ...defaultSetting, ...JSON.parse(raw) };
 	}
-} catch {}
-
+} catch (e) {
+	console.warn("Failed to load settings.js from localStorage", e);
+}
 export const setting = reactive(initial);
 
 watch(
