@@ -13,16 +13,20 @@ pomodoroTime:{{ pomodoroTime }}
 		<div id="Pomodoro">
 			<div id="current" :style="{ fontSize: currentTodo?.name ? '1.5rem' : '3rem' }">{{ currentTodo?.name ?? emoji }}</div>
 			<div id="box">
-				<div id="clock" :style="{ background: `conic-gradient(var(--theme1) 0% ${progress}%,var(--theme3) ${progress}% 100%)` }">
+				<div id="clock" :style="{ background: `conic-gradient(var(--theme3) 0% ${progress}%,var(--theme1) ${progress}% 100%)` }">
 					<div id="countdown">{{ result }}</div>
 				</div>
 			</div>
 			<div id="time_control">
 				<button
 					type="button"
-					:style="{ display: isCountdown ? 'none' : 'flex', cursor: currentTodo?.name ? 'pointer' : 'not-allowed', backgroundColor: currentTodo ? 'var(--theme1)' : 'var(--theme2)' }"
+					:style="{
+						display: isCountdown ? 'none' : 'flex',
+						cursor: currentTodo?.name && mode === 'pomodoro' ? 'pointer' : 'not-allowed',
+						backgroundColor: currentTodo ? 'var(--theme1)' : 'var(--theme2)',
+					}"
 					@click="Start"
-					:disabled="!currentTodo?.name"
+					:disabled="!currentTodo?.name && mode === 'pomodoro'"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon text">
 						<path
@@ -126,7 +130,7 @@ const result = computed(() => {
 });
 const progress = computed(() => {
 	if (duration.value === 0) return 0;
-	return (1 - remain.value / duration.value) * 100;
+	return (remain.value / duration.value) * 100;
 });
 
 /* ================== 系统时间 ================== */
@@ -155,6 +159,7 @@ onMounted(() => {
 	if ("Notification" in window && Notification.permission === "default") {
 		Notification.requestPermission();
 	}
+	// notify("⒈🍅 ⒉📑", "Before you start Pomodoro, please choose one ToDo!");
 });
 
 onUnmounted(() => {
@@ -251,27 +256,46 @@ function notify(title, body) {
 
 <style>
 :root {
-	--bgc1: #282c34;
-	--bgc2: #444;
+	--bgc1: #21252b;
+	--bgc2: #282c34;
+	--bgc3: #2f343e;
 	--font1: #abb2bf;
-	--font2: #ccc;
+	--font2: #999;
 	--theme1: tomato;
 	--theme2: color-mix(in srgb, var(--theme1) 80%, #000);
 	--theme3: color-mix(in srgb, var(--theme1) 60%, #000);
 }
 * {
 	transition: background-color 0.8s, border 0.8s, color 0.2s;
-	border: 2px;
-	border-color: var(--font2);
+	border-width: 2px;
+	border-color: var(--bgc3);
 }
 ::selection {
 	background-color: var(--theme1);
-	color: var(--bgc1);
+	color: var(--bgc2);
+}
+::-webkit-scrollbar {
+	width: 0.5rem;
+}
+::-webkit-scrollbar-track {
+	background: var(--bgc3);
+	border-radius: 0rem 2rem 2rem 0rem;
+}
+::-webkit-scrollbar-thumb {
+	background-color: var(--font2);
+	border-radius: 0rem 2rem 2rem 0rem;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--theme1);
 }
 #body {
 	display: grid;
-	grid-template-rows: repeat(100, 1fr);
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: auto 1fr auto;
+	grid-template-columns: 1fr 2fr;
+	grid-template-areas:
+		"Pomodoro nav"
+		"Pomodoro page"
+		"footer footer";
 	height: 100%;
 	padding: 0.4rem 0.6rem 0 0.6rem;
 	background-color: var(--bgc1);
@@ -295,7 +319,7 @@ button {
 	border: none;
 	border-radius: 0.5rem;
 	font-family: "Delius", cursive;
-	color: var(--bgc1);
+	color: var(--bgc2);
 }
 .text {
 	margin-right: 0.4rem;
@@ -304,18 +328,16 @@ button {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	grid-row: 1 / 100;
-	grid-column: 1 / 2;
-	margin-right: 0.4rem;
-	padding: 2rem 1rem;
+	grid-area: Pomodoro;
+	margin-right: 0.8rem;
+	background-color: var(--bgc2);
 	border-style: solid;
 	border-radius: 1rem;
 }
 #current {
 	overflow: inherit;
 	width: 100%;
-	height: 1.5rem;
-	font-size: 1.5rem;
+	height: 2rem;
 	text-align: center;
 	word-break: break-word;
 	white-space: normal;
@@ -325,14 +347,15 @@ button {
 	justify-content: center;
 	align-items: center;
 	flex: 1 1 0;
-	width: 90%;
+	width: 100%;
+	padding: 0.5rem 0;
 }
 #clock {
 	aspect-ratio: 1 / 1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 100%;
+	width: 80%;
 	border-radius: 50%;
 }
 #countdown {
@@ -344,16 +367,17 @@ button {
 	align-items: center;
 	width: 95%;
 	height: 95%;
-	background-color: var(--bgc2);
+	background-color: var(--bgc3);
 	border-radius: 50%;
 	font-size: 3rem;
-	font-family: "Segoe UI", Consolas, "Courier New", monospace;
+	font-family: Consolas, "Courier New", monospace;
 	font-weight: 900;
 	color: var(--theme1);
 }
 #time_control {
 	display: flex;
 	justify-content: space-evenly;
+	align-items: center;
 	width: 100%;
 }
 #time_control button {
@@ -368,19 +392,17 @@ button {
 	background-color: var(--theme2);
 }
 #page {
-	grid-row: 8 / 100;
-	grid-column: 2 / 4;
-	margin-top: 0.8rem;
-	margin-left: 0.4rem;
+	grid-area: page;
+	min-height: 0;
+	margin-top: 0.4rem;
 	border-style: solid;
 	border-radius: 1rem;
 }
 nav {
 	display: flex;
-	grid-row: 1 / 8;
-	grid-column: 2 / 4;
-	margin-left: 0.4rem;
-	padding: 0.2rem;
+	grid-area: nav;
+	padding: 0.1rem;
+	background-color: var(--bgc2);
 	border-style: solid;
 	border-radius: 0.6rem;
 	font-family: "Aldrich", sans-serif;
@@ -390,22 +412,56 @@ nav {
 	justify-content: center;
 	align-items: center;
 	flex: 1 1 0;
+	padding: 0.4rem 0;
 	border-radius: 0.4rem;
 	color: var(--font1);
 	text-decoration: none;
 }
 .control.router-link-exact-active {
-	background-color: var(--bgc2);
+	background-color: var(--bgc3);
 	color: var(--theme1);
 }
 footer {
-	grid-row: 100 / 101;
-	grid-column: 1 / 4;
+	grid-area: footer;
 	font-family: "Segoe UI", Consolas, "Courier New", monospace;
 	text-align: center;
 }
 .colon {
 	transition: opacity 0.1s;
 	text-shadow: 0 0 2px;
+}
+@media (max-width: 768px) {
+	* {
+		border: 0;
+	}
+	#body {
+		grid-template-rows: auto 1fr auto;
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			"Pomodoro"
+			"page"
+			"nav";
+		padding: 0;
+		background-color: var(--bgc2);
+	}
+	#clock {
+		width: 60%;
+	}
+	#Pomodoro {
+		margin: 0;
+	}
+	#current {
+		height: 1.5rem;
+		text-align: start;
+	}
+	#page {
+		margin: 0.2rem 0;
+	}
+	nav {
+		border: 0;
+	}
+	footer {
+		display: none;
+	}
 }
 </style>

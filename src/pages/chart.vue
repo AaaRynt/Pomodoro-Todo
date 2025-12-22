@@ -35,6 +35,7 @@ import { completedTodos } from "@/store/todo";
     gap: 1rem;
     overflow-y: auto;
     padding: 1rem;
+    background-color: var(--bgc2);
     border-radius: 1rem;
 }
 caption {
@@ -50,10 +51,15 @@ table {
     border-collapse: collapse;
     width: 100%;
 }
+tbody > tr:nth-of-type(odd) {
+    background-color: var(--bgc3);
+}
 td,
 th {
-    padding: 0.5rem;
+    padding: 0.5rem 0;
     border: 1px solid var(--font2);
-    text-align: start;
+}
+td{
+    padding: 0.5rem 0rem 0.5rem 0.5rem;
 }
 </style>

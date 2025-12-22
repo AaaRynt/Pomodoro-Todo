@@ -10,7 +10,7 @@
 			</div>
 			<button id="mode" @click="setting.isDark = !setting.isDark">
 				<div id="moon" :style="{ transform: setting.isDark ? 'scale(1) translate(30%, -30%)' : 'scale(0) translate(30%, -30%)' }"></div>
-				<div id="sun" :style="{ border: setting.isDark ? '2px solid var(--font1)' : '2px solid var(--bgc1)' }"></div>
+				<div id="sun" :style="{ border: setting.isDark ? '2px solid var(--font1)' : '2px solid var(--bgc2)' }"></div>
 				<small v-for="i in 4" :key="i" class="sun-ray" :style="{ height: setting.isDark ? '0px' : '48px' }"></small>
 			</button>
 		</fieldset>
@@ -79,126 +79,128 @@ function reset() {
 
 <style scoped>
 #body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 0;
-    overflow-y: auto;
-    border-radius: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	gap: 0;
+	overflow-y: auto;
+	background-color: var(--bgc2);
+	border-radius: 1rem;
 }
 fieldset {
-    display: flex;
-    width: 100%;
-    padding: 1rem;
-    border: var(--font2) solid 1px;
-    border-radius: 1rem;
+	display: flex;
+	width: 100%;
+	padding: 1rem;
+	border: var(--font2) solid 1px;
+	border-radius: 1rem;
 }
 #theme {
-    justify-content: space-between;
+	justify-content: space-between;
 }
 #duration {
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
 }
 #color {
-    -webkit-background-clip: text;
-    background: linear-gradient(105deg, tomato, sandybrown, seagreen, skyblue, violet);
-    background-clip: text;
-    color: transparent;
+	-webkit-background-clip: text;
+	background: linear-gradient(105deg, tomato, sandybrown, seagreen, skyblue, violet);
+	background-clip: text;
+	color: transparent;
 }
 #mode {
-    all: unset;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    transform: translateX(-200%);
-    transition: transform 0.5s !important;
-    cursor: pointer;
+	all: unset;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	transform: translateX(-200%);
+	transition: transform 0.5s !important;
+	cursor: pointer;
 }
 #mode:hover {
-    transform: translateX(-200%) rotate(-22.5deg);
+	transform: translateX(-200%) rotate(-22.5deg);
 }
 #moon {
-    transform-origin: right bottom;
-    position: absolute;
-    z-index: 2;
-    width: 44px;
-    height: 44px;
-    transition: transform 0.5s, background-color 0.8s;
-    background-color: var(--bgc1);
-    border-radius: 50%;
+	transform-origin: right bottom;
+	position: absolute;
+	z-index: 2;
+	width: 44px;
+	height: 44px;
+	transition: transform 0.5s, background-color 0.8s;
+	background-color: var(--bgc2);
+	border-radius: 50%;
 }
 #sun {
-    width: 32px;
-    height: 32px;
-    transition: background-color 0.2s;
-    background-color: var(--font1);
-    border: 4px solid var(--bgc1);
-    border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	transition: background-color 0.2s;
+	background-color: var(--font1);
+	border: 4px solid var(--bgc2);
+	border-radius: 50%;
 }
 .sun-ray {
-    display: block;
-    position: absolute;
-    z-index: -1;
-    width: 4px;
-    transition: height 0.3s ease-in, background-color 0.8s;
-    background-color: var(--font1);
+	display: block;
+	position: absolute;
+	z-index: -1;
+	width: 4px;
+	transition: height 0.3s ease-in, background-color 0.8s;
+	background-color: var(--font1);
 }
 .sun-ray:nth-child(3) {
-    transform: rotate(0deg);
+	transform: rotate(0deg);
 }
 .sun-ray:nth-child(4) {
-    transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 .sun-ray:nth-child(5) {
-    transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 .sun-ray:nth-child(6) {
-    transform: rotate(135deg);
+	transform: rotate(135deg);
 }
 span {
-    font-weight: 900;
+	font-weight: 900;
 }
 .range_set {
-    display: flex;
-    justify-content: space-between;
-    width: 90%;
+	display: flex;
+	justify-content: space-between;
+	width: 90%;
 }
 input {
-    accent-color: var(--theme1);
-    margin: 0.2rem 0.7rem;
-    transition: accent-color 0.8s;
+	accent-color: var(--theme1);
+	margin: 0.2rem 0.7rem;
+	transition: accent-color 0.8s;
 }
 input[type="range"] {
-    display: block;
-    width: 90%;
-    cursor: ew-resize;
+	display: block;
+	width: 90%;
+	cursor: ew-resize;
 }
 label {
-    display: inline-block;
-    cursor: pointer;
-    font-weight: 900;
+	display: inline-block;
+	cursor: pointer;
+	font-weight: 900;
 }
 a {
-    cursor: help;
-    color: var(--font1);
-    text-decoration: none;
+	cursor: help;
+	color: var(--font1);
+	text-decoration: none;
 }
 a:hover {
-    text-decoration: underline solid;
+	text-decoration: underline solid;
 }
 #reset {
-    padding: 0.4rem 1.6rem;
-    background-color: var(--bgc1);
-    border: 1px solid var(--font2);
-    color: var(--font1);
+	padding: 0.4rem 1.6rem;
+	background-color: var(--bgc2);
+	border: 1px solid var(--font2);
+	color: var(--font1);
 }
 #reset:hover {
-    transition: border 0.2s;
-    border: 1px solid rgb(200, 50, 50);
-    color: tomato;
+	transition: border 0.2s;
+	background-color: var(--bgc3);
+	border: 1px solid rgb(200, 50, 50);
+	color: tomato;
 }
 </style>

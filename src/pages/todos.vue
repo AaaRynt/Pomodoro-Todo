@@ -1,7 +1,7 @@
 <template>
 	<div id="body">
 		<div id="control">
-			<input type="text" v-model="text" placeholder="Add new Todo..." maxlength="24" />
+			<input type="text" v-model="text" placeholder="Add new Todo..." maxlength="24" @keydown.enter="add" />
 			<button @click="add" id="add" type="button">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><path d="M2 18H12V20H2V18ZM2 11H22V13H2V11ZM2 4H22V6H2V4ZM18 18V15H20V18H23V20H20V23H18V20H15V18H18Z"></path></svg>
 			</button>
@@ -68,97 +68,102 @@ function remove(todo) {
 
 <style scoped>
 #body {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	overflow-y: auto;
-	padding: 1rem;
-	border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: var(--bgc2);
+    border-radius: 1rem;
 }
 #control {
-	display: flex;
-	gap: 1rem;
-	height: 2rem;
-	margin: 0.5rem 0 1rem 0;
+    display: flex;
+    gap: 1rem;
+    height: 2rem;
+    margin: 0.5rem 0 1rem 0;
 }
 input {
-	flex-grow: 1;
-	height: 3rem;
-	padding: 0 1rem;
-	background-color: var(--bgc1);
-	border: var(--font1) 2px solid;
-	border-radius: 0.5rem;
-	font-size: 1.2rem;
-	font-family: "Delius", cursive;
-	color: var(--font1);
+    flex-grow: 1;
+    height: 3rem;
+    padding: 0 1rem;
+    background-color: var(--bgc2);
+    border: var(--font2) 2px solid;
+    border-radius: 0.5rem;
+    font-size: 1.2rem;
+    font-family: "Delius", cursive;
+    color: var(--font2);
 }
 input:focus {
-	outline: var(--theme1) solid;
-	transition: outline 0.2s, border 0.2s;
-	border: var(--theme3) solid;
+    outline: var(--theme1) solid;
+    transition: outline 0.2s, border 0.2s;
+    background-color: var(--bgc1);
+    border: var(--theme3) solid;
 }
 .li {
-	display: flex;
-	align-items: center;
-	gap: 1.5rem;
-	width: 100%;
-	height: 3rem;
-	min-height: 2rem;
-	padding: 0 1.5rem;
-	background-color: var(--bgc2);
-	border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    height: 3rem;
+    min-height: 2rem;
+    padding: 0 1.5rem;
+    background-color: var(--bgc3);
+    border-radius: 1rem;
 }
 .li .active {
-	border: var(--theme1) 2px solid;
+    border: var(--theme1) 2px solid;
 }
 .ok {
-	order: 1;
+    order: 1;
 }
 .time {
-	order: 2;
-	width: 5rem;
-	white-space: pre;
+    order: 2;
+    width: 5rem;
+    white-space: pre;
 }
 .name {
-	order: 3;
-	flex-grow: 1;
+    order: 3;
+    flex-grow: 1;
 }
 span {
-	display: inline-block;
-	position: relative;
+    display: inline-block;
+    position: relative;
 }
 .start {
-	order: 4;
+    order: 4;
 }
 .delete {
-	order: 5;
-}
-.ok:hover ~ .name {
-	text-decoration: line-through var(--theme1);
-}
-.start:hover ~ .name {
-	color: var(--theme1);
-	text-shadow: 0 0 4px var(--theme3);
-}
-.delete:hover ~ span {
-	filter: brightness(0.8);
-	text-decoration: line-through rgba(255, 60, 60, 1) double;
+    order: 5;
 }
 button {
-	background-color: transparent;
-	border: none;
-	color: var(--font1);
-}
-#add {
-	width: 3rem;
-	height: 3rem;
-	border: 2px solid var(--theme2);
-	border-radius: 0.5rem;
+    background-color: transparent;
+    border: none;
+    color: var(--font1);
 }
 button:hover {
-	color: var(--theme1);
+    color: var(--theme1);
 }
-.delete > * {
-	fill: rgba(200, 50, 50, 1);
+#add {
+    width: 3rem;
+    height: 3rem;
+    border: 2px solid var(--theme2);
+    border-radius: 0.5rem;
+}
+.ok:hover ~ .name {
+    text-decoration: line-through var(--theme1);
+}
+.start:hover ~ .name {
+    color: var(--theme1);
+    text-shadow: 0 0 4px var(--theme3);
+}
+.delete:hover ~ span {
+    opacity: 0.7;
+    text-decoration: line-through #f00 double;
+}
+.delete {
+    color: #d33;
+}
+.delete:hover{
+    color: #f00;
 }
 </style>

@@ -24,10 +24,11 @@ watch(
 	setting,
 	() => {
 		document.documentElement.style.setProperty("--theme1", setting.theme);
-		document.documentElement.style.setProperty("--bgc1", setting.isDark ? "#282c34" : "#abb2bf");
-		document.documentElement.style.setProperty("--bgc2", setting.isDark ? "#444" : "#ccc");
-		document.documentElement.style.setProperty("--font1", setting.isDark ? "#abb2bf" : "#282c34");
-		document.documentElement.style.setProperty("--font2", setting.isDark ? "#ccc" : "#444");
+		document.documentElement.style.setProperty("--bgc1", setting.isDark ? "#21252b" : "#ddd");
+		document.documentElement.style.setProperty("--bgc2", setting.isDark ? "#282c34" : "#fff");
+		document.documentElement.style.setProperty("--bgc3", setting.isDark ? "#2f343e" : "#eee");
+		document.documentElement.style.setProperty("--font1", setting.isDark ? "#abb2bf" : "#000");
+		document.documentElement.style.setProperty("--font2", setting.isDark ? "#999" : "#333");
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(setting));
 	},
 	{ deep: true, immediate: true }
