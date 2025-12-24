@@ -1,12 +1,15 @@
 <template>
-	<pre style="position: absolute; background-color: gray; opacity: 0.8">
-duration:{{ duration }}
-durationTemp:{{ durationTemp }}
-remain:{{ remain }}
-pomodoroCount:{{ pomodoroCount }}
+	<pre style="position: absolute; background: #446; opacity: 0.5; color: #fff">
+mode: {{ mode }}
+tip: {{ tip }}
+isCountdown: {{ isCountdown }}
+hasStarted: {{ hasStarted }}
+pomodoroCount: {{ pomodoroCount }}
+remain: {{ remain }}
+durationTemp: {{ durationTemp }}
+timer: {{ timer }}
+countdownTimer: {{ countdownTimer }}
 {{ setting }}
-focusTotal :{{ focusTotal }}
-pomodoroTotal:{{ pomodoroTotal }}
 </pre
 	>
 	<div id="body">
@@ -17,7 +20,7 @@ pomodoroTotal:{{ pomodoroTotal }}
 					<div id="countdown" class="mono">{{ result }}</div>
 				</div>
 			</div>
-			<div id="time_control">
+			<div class="button-control">
 				<button
 					type="button"
 					:style="{
@@ -211,6 +214,7 @@ function Finish() {
 function handleFinish() {
 	if (mode.value === "pomodoro") {
 		const info = getTimeInfo();
+		currentTodo.value.doneTime = info.timestamp;
 		currentTodo.value.doneAt = `${info.month}/${info.date} ${info.hour}:${info.minute}`;
 		completedTodos.value.push({ ...currentTodo.value });
 		currentTodo.value = null;
@@ -271,7 +275,7 @@ function notify(title, body) {
 	color: currentColor;
 }
 [title] {
-	cursor: help;
+	cursor: pointer;
 }
 ::-webkit-scrollbar {
 	width: 0.5rem;
@@ -324,6 +328,17 @@ button {
 	font-family: "Delius", cursive;
 	color: var(--bgc2);
 }
+.page-button {
+	padding: 0.4rem 1rem;
+	background-color: var(--bgc2);
+	border: 1px solid var(--font2);
+	color: var(--font1);
+}
+.page-button:hover {
+	background-color: var(--bgc3);
+	border: 1px solid var(--theme1);
+	color: var(--theme1);
+}
 #Pomodoro {
 	display: flex;
 	flex-direction: column;
@@ -375,13 +390,13 @@ button {
 	font-weight: 900;
 	color: var(--theme1);
 }
-#time_control {
+.button-control {
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
 	width: 100%;
 }
-#time_control button {
+#Pomodoro button {
 	width: 6rem;
 	padding: 0.4rem 0;
 	transition: background-color 0.2s;
@@ -389,7 +404,7 @@ button {
 	font-size: 1.2rem;
 	font-weight: 900;
 }
-#time_control button:hover {
+#Pomodoro button:hover {
 	background-color: var(--theme2);
 }
 #page {

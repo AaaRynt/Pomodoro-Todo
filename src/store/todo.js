@@ -15,10 +15,10 @@ try {
 		const data = JSON.parse(raw);
 		todos.value = data.todos ?? [];
 		completedTodos.value = data.completedTodos ?? [];
-		pomodoroTotal.value = data.pomodoroTotal ?? [];
-		focusTotal.value = data.focusTotal ?? [];
-		breakTotal.value = data.breakTotal ?? [];
-		earlyCompletions.value = data.earlyCompletions ?? [];
+		pomodoroTotal.value = data.pomodoroTotal ?? 0;
+		focusTotal.value = data.focusTotal ?? 0;
+		breakTotal.value = data.breakTotal ?? 0;
+		earlyCompletions.value = data.earlyCompletions ?? 0;
 	}
 } catch (e) {
 	console.warn("Failed to load todos from localStorage", e);

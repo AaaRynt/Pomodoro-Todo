@@ -3,11 +3,6 @@
 		<table>
 			<caption title="Well done!">
 				Completed Todos:<span id="count">&nbsp{{ completedTodos.length }}</span>
-				<button id="export" @click="export">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19ZM13 9V16H11V9H6L12 3L18 9H13Z"></path></svg
-					>&nbspExport CSV
-				</button>
 			</caption>
 			<thead>
 				<tr>
@@ -55,7 +50,7 @@
 			</tbody>
 			<thead>
 				<tr>
-					<th colspan="2" title="✔">
+					<th title="✔" colspan="2">
 						<span class="media-text"
 							><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="color: var(--theme1)">
 								<path
@@ -94,11 +89,25 @@
 				</tr>
 			</tbody>
 		</table>
+		<div class="button-control">
+			<button type="button" class="page-button" @click="exportCSV">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+					<path d="M4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19ZM13 9V16H11V9H6L12 3L18 9H13Z"></path></svg
+				>&nbspExport CSV
+			</button>
+			<button type="reset" class="page-button" @click="reset">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+					<path
+						d="M12 4C9.4095 4 7.10606 5.23053 5.64274 7.14274L8 9.5H2V3.5L4.21863 5.71863C6.05061 3.452 8.85558 2 12 2 17.5228 2 22 6.47715 22 12H20C20 7.58172 16.4183 4 12 4ZM4 12C4 16.4183 7.58172 20 12 20 14.5905 20 16.894 18.7695 18.3573 16.8573L16 14.5 22 14.5V20.5L19.7814 18.2814C17.9494 20.548 15.1444 22 12 22 6.47715 22 2 17.5228 2 12H4Z"
+					></path></svg
+				>&nbspReset localStorage
+			</button>
+		</div>
 	</div>
 </template>
 
 <script setup>
-import { completedTodos, pomodoroTotal, focusTotal, breakTotal, earlyCompletions } from "@/store/todo";
+import { todos, completedTodos, pomodoroTotal, focusTotal, breakTotal, earlyCompletions } from "@/store/todo";
 
 function totalTime(sec) {
 	const h = Math.floor(sec / 3600);
@@ -106,12 +115,42 @@ function totalTime(sec) {
 	const s = sec % 60;
 	return `${h ? `${h}h` : ""}${m || h ? `${m}m` : ""}${s}s`;
 }
+function exportCSV() {
+	const headers = ["Todo", "AddTimestamp", "DoneTimestamp"];
+	const rows = completedTodos.value.map((t) => {
+		const name = (t.name ?? "").replace(/"/g, '""');
+		return [`"${name}"`, t.addTime, t.doneTime];
+	});
+	let csv = headers.join(",") + "\n";
+	rows.forEach((row) => {
+		csv += row.join(",") + "\n";
+	});
+	const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+	const url = URL.createObjectURL(blob);
+	const link = document.createElement("a");
+	link.href = url;
+	link.download = `pomodoro_${new Date().toISOString()}.csv`;
+	link.click();
+	setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+function reset() {
+	const OK = confirm("Are you sure?");
+	if (OK) {
+		todos.value = [];
+		completedTodos.value = [];
+		pomodoroTotal.value = 0;
+		focusTotal.value = 0;
+		breakTotal.value = 0;
+		earlyCompletions.value = 0;
+	}
+}
 </script>
 
 <style scoped>
 #body {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	gap: 1rem;
 	overflow-y: auto;
 	padding: 1rem;
@@ -124,17 +163,6 @@ caption {
 #count {
 	font-size: 1.5rem;
 	font-weight: 900;
-	color: var(--theme1);
-}
-#export {
-	padding: 0.4rem 1rem;
-	background-color: var(--bgc2);
-	border: 1px solid var(--font2);
-	color: var(--font1);
-}
-#export:hover {
-	background-color: var(--bgc3);
-	border: 1px solid var(--theme1);
 	color: var(--theme1);
 }
 table {
@@ -165,5 +193,4 @@ td {
 		display: none;
 	}
 }
-
 </style>

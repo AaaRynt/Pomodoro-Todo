@@ -45,16 +45,23 @@ function add() {
 		return;
 	}
 	const info = getTimeInfo();
-	todos.value.push({ key: Date.now(), addAt: `${info.month}/${info.date} ${info.hour}:${info.minute}`, doneAt: "", name: text.value });
+	todos.value.push({
+		key: Date.now(),
+		addAt: `${info.month}/${info.date} ${info.hour}:${info.minute}`,
+		addTime: info.timestamp,
+		doneAt: "",
+		doneTime: "",
+		name: text.value,
+	});
 	text.value = "";
 }
-
 function start(todo) {
 	currentTodo.value = todo;
 }
 function complete(todo) {
 	earlyCompletions.value++;
 	const info = getTimeInfo();
+	todo.doneTime = info.timestamp;
 	todo.doneAt = `${info.month}/${info.date} ${info.hour}:${info.minute}`;
 	completedTodos.value.push({ ...todo });
 	if (currentTodo.value?.key === todo.key) {
