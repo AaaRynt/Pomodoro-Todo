@@ -1,23 +1,32 @@
 <template>
-	<pre style="position: absolute; background: #446; opacity: 0.5; color: #fff">
-mode: {{ mode }}
+<!-- <pre style="position: absolute; background: #446; opacity: 0.5; color: #fff">
 tip: {{ tip }}
 isCountdown: {{ isCountdown }}
 hasStarted: {{ hasStarted }}
 pomodoroCount: {{ pomodoroCount }}
-remain: {{ remain }}
-durationTemp: {{ durationTemp }}
 timer: {{ timer }}
 countdownTimer: {{ countdownTimer }}
 {{ setting }}
-</pre
-	>
+mode: {{ mode }}
+duration:{{ duration }}
+remain: {{ remain }}
+progress:{{ progress.toFixed(2) }}
+{{ pomodoroCount }}/{{ setting.interval }}
+currentTodo:{{ currentTodo }}
+</pre> -->
 	<div id="body">
 		<div id="Pomodoro">
 			<div id="current" :style="{ fontSize: currentTodo?.name || tip ? '1.5rem' : '3rem' }">{{ displayContent }}</div>
 			<div id="box">
-				<div id="clock" :style="{ background: `conic-gradient(var(--theme3) 0% ${progress}%,var(--theme1) ${progress}% 100%)` }">
-					<div id="countdown" class="mono">{{ result }}</div>
+				<div id="countClock" :style="{ background: `conic-gradient(var(--theme3) 0% ${progress}%,var(--theme1) ${progress}% 100%)` }">
+					<div
+						id="pomodoroClock"
+						:style="{
+							background: mode === 'long' ? 'var(--theme2)' : `conic-gradient(var(--theme2) 0% ${((pomodoroCount % setting.interval) * 100) / setting.interval}%,var(--bgc3) ${((pomodoroCount % setting.interval) * 100) / setting.interval}% 100%)`,
+						}"
+					>
+						<div id="countdown" class="mono">{{ result }}</div>
+					</div>
 				</div>
 			</div>
 			<div class="button-control">
@@ -25,23 +34,18 @@ countdownTimer: {{ countdownTimer }}
 					type="button"
 					:style="{
 						display: isCountdown ? 'none' : 'flex',
-						cursor: currentTodo?.name && mode === 'pomodoro' ? 'pointer' : 'not-allowed',
-						backgroundColor: currentTodo ? 'var(--theme1)' : 'var(--theme2)',
+						disabled: !currentTodo?.name && mode === 'pomodoro',
 					}"
 					@click="Start"
 					:disabled="!currentTodo?.name && mode === 'pomodoro'"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-						<path
-							d="M16.3944 12.0001L10 7.7371V16.263L16.3944 12.0001ZM19.376 12.4161L8.77735 19.4818C8.54759 19.635 8.23715 19.5729 8.08397 19.3432C8.02922 19.261 8 19.1645 8 19.0658V4.93433C8 4.65818 8.22386 4.43433 8.5 4.43433C8.59871 4.43433 8.69522 4.46355 8.77735 4.5183L19.376 11.584C19.6057 11.7372 19.6678 12.0477 19.5146 12.2774C19.478 12.3323 19.4309 12.3795 19.376 12.4161Z"
-						></path></svg
-					>{{ remain === durationTemp ? "START" : "Begin" }}
+						<path d="M16.3944 12.0001L10 7.7371V16.263L16.3944 12.0001ZM19.376 12.4161L8.77735 19.4818C8.54759 19.635 8.23715 19.5729 8.08397 19.3432C8.02922 19.261 8 19.1645 8 19.0658V4.93433C8 4.65818 8.22386 4.43433 8.5 4.43433C8.59871 4.43433 8.69522 4.46355 8.77735 4.5183L19.376 11.584C19.6057 11.7372 19.6678 12.0477 19.5146 12.2774C19.478 12.3323 19.4309 12.3795 19.376 12.4161Z"></path></svg
+					>{{ mode === "pomodoro" ? "START" : "RELAX" }}
 				</button>
-				<button type="button" :style="{ display: isCountdown || remain === durationTemp ? 'none' : 'flex' }" @click="Again">
+				<button type="button" :style="{ display: isCountdown || remain === duration ? 'none' : 'flex' }" @click="Again">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-						<path
-							d="M18.5374 19.5674C16.7844 21.0831 14.4993 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 14.1361 21.3302 16.1158 20.1892 17.7406L17 12H20C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.1502 20 16.1022 19.1517 17.5398 17.7716L18.5374 19.5674Z"
-						></path></svg
+						<path d="M18.5374 19.5674C16.7844 21.0831 14.4993 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 14.1361 21.3302 16.1158 20.1892 17.7406L17 12H20C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.1502 20 16.1022 19.1517 17.5398 17.7716L18.5374 19.5674Z"></path></svg
 					>Again
 				</button>
 				<button type="button" :style="{ display: isCountdown ? 'flex' : 'none' }" @click="Pause">
@@ -59,17 +63,13 @@ countdownTimer: {{ countdownTimer }}
 		<nav>
 			<RouterLink class="control" to="/chart">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-					<path
-						d="M11 7H13V17H11V7ZM15 11H17V17H15V11ZM7 13H9V17H7V13ZM15 4H5V20H19V8H15V4ZM3 2.9918C3 2.44405 3.44749 2 3.9985 2H16L20.9997 7L21 20.9925C21 21.5489 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5447 3 21.0082V2.9918Z"
-					></path>
+					<path d="M11 7H13V17H11V7ZM15 11H17V17H15V11ZM7 13H9V17H7V13ZM15 4H5V20H19V8H15V4ZM3 2.9918C3 2.44405 3.44749 2 3.9985 2H16L20.9997 7L21 20.9925C21 21.5489 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5447 3 21.0082V2.9918Z"></path>
 				</svg>
 				&nbspChart
 			</RouterLink>
 			<RouterLink class="control" to="/todos">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-					<path
-						d="M17 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H7V0H9V2H15V0H17V2ZM17 4V6H15V4H9V6H7V4H5V20H19V4H17ZM7 8H17V10H7V8ZM7 12H17V14H7V12Z"
-					></path>
+					<path d="M17 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H7V0H9V2H15V0H17V2ZM17 4V6H15V4H9V6H7V4H5V20H19V4H17ZM7 8H17V10H7V8ZM7 12H17V14H7V12Z"></path>
 				</svg>
 				&nbspTo-Do
 			</RouterLink>
@@ -101,7 +101,7 @@ countdownTimer: {{ countdownTimer }}
 <script setup>
 import { onMounted, onUnmounted, ref, reactive, computed, watch } from "vue";
 import { setting } from "@/store/setting";
-import { currentTodo, completedTodos, pomodoroTotal, focusTotal, breakTotal, earlyCompletions } from "@/store/todo";
+import { todos, completedTodos, currentTodo, pomodoroTotal, focusTotal, breakTotal, earlyCompletions } from "@/store/todo";
 import { getTimeInfo } from "@/utils/getTimeInfo";
 import emojis from "@/assets/emojis.json";
 import quotes from "@/assets/quotes.json";
@@ -111,8 +111,8 @@ const tip = ref(true);
 const isCountdown = ref(false);
 const hasStarted = ref(false);
 const pomodoroCount = ref(0);
+const duration = ref(0);
 const remain = ref(0);
-const durationTemp = ref(0);
 const time = reactive({
 	timestamp: 0,
 	year: "1970",
@@ -132,7 +132,7 @@ const displayContent = computed(() => {
 		tip.value = false;
 		return currentTodo.value.name;
 	} else if (tip.value) {
-		return "Please select one todo to start!";
+		return "Select one todo to start.";
 	} else {
 		return pick(emojis);
 	}
@@ -143,25 +143,28 @@ const result = computed(() => {
 	const sec = (remain.value % 60).toString().padStart(2, "0");
 	return `${min}:${sec}`;
 });
-const duration = computed(() => {
-	if (mode.value === "pomodoro") return setting.pomodoro * 60;
-	if (mode.value === "short") return setting.short * 60;
-	if (mode.value === "long") return setting.long * 60;
-});
 const progress = computed(() => {
-	if (durationTemp.value === 0) return 0;
-	return (remain.value / durationTemp.value) * 100;
+	if (duration.value === 0) return 0;
+	if (!hasStarted.value) return 100;
+	else return (remain.value / duration.value) * 100;
 });
 
 onMounted(() => {
-	durationTemp.value = duration.value;
-	remain.value = durationTemp.value;
-	updateTime();
-	timer = setInterval(updateTime, 1000);
-	if ("Notification" in window && Notification.permission === "default") {
-		Notification.requestPermission();
-	}
-	// notify("🍅📑", "Before you start Pomodoro, please select one ToDo!");
+    duration.value = setting.pomodoro * 60;
+    remain.value = duration.value;
+    updateTime();
+    timer = setInterval(updateTime, 1000);
+
+    if (!("Notification" in window)) return;
+    if (Notification.permission === "granted") {
+        notify("🍅📑", "Before you start Pomodoro, please select one To-Do!");
+    } else if (Notification.permission === "default") {
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                notify("🍅📑", "Before you start Pomodoro, please select one To-Do!");
+            }
+        });
+    }
 });
 onUnmounted(() => {
 	clearInterval(timer);
@@ -171,13 +174,32 @@ watch(
 	() => setting.pomodoro,
 	() => {
 		if (!hasStarted.value && mode.value === "pomodoro") {
-			durationTemp.value = duration.value;
-			remain.value = durationTemp.value;
+			duration.value = setting.pomodoro * 60;
+			remain.value = duration.value;
+		}
+	}
+);
+watch(
+	() => setting.short,
+	() => {
+		if (!hasStarted.value && mode.value === "short") {
+			duration.value = setting.short * 60;
+			remain.value = duration.value;
+		}
+	}
+);
+watch(
+	() => setting.long,
+	() => {
+		if (!hasStarted.value && mode.value === "long") {
+			duration.value = setting.long * 60;
+			remain.value = duration.value;
 		}
 	}
 );
 
 function Start() {
+	if (!currentTodo.value?.name && mode.value === "pomodoro") return;
 	isCountdown.value = true;
 	hasStarted.value = true;
 	countdownTimer = setInterval(() => {
@@ -188,15 +210,27 @@ function Start() {
 		} else {
 			clearInterval(countdownTimer);
 			isCountdown.value = false;
+			hasStarted.value = false;
 			if (mode.value === "pomodoro") pomodoroTotal.value++;
 			handleFinish();
 		}
-	}, 100);
+	}, 1000);
 }
 function Again() {
 	clearInterval(countdownTimer);
 	isCountdown.value = false;
 	hasStarted.value = false;
+	switch (mode.value) {
+		case "pomodoro":
+			duration.value = setting.pomodoro * 60;
+			break;
+		case "short":
+			duration.value = setting.short * 60;
+			break;
+		case "long":
+			duration.value = setting.long * 60;
+			break;
+	}
 	remain.value = duration.value;
 }
 function Pause() {
@@ -209,6 +243,7 @@ function Finish() {
 	hasStarted.value = false;
 	remain.value = 0;
 	earlyCompletions.value++;
+	if (mode.value === "pomodoro") pomodoroTotal.value++;
 	handleFinish();
 }
 function handleFinish() {
@@ -217,21 +252,24 @@ function handleFinish() {
 		currentTodo.value.doneTime = info.timestamp;
 		currentTodo.value.doneAt = `${info.month}/${info.date} ${info.hour}:${info.minute}`;
 		completedTodos.value.push({ ...currentTodo.value });
+		todos.value = todos.value.filter((todo) => !todo.doneTime);
 		currentTodo.value = null;
 		pomodoroCount.value++;
 		if (pomodoroCount.value % setting.interval === 0) {
+			duration.value = setting.long * 60;
 			mode.value = "long";
 			notify("🛏️ Long Break", pick(quotes.long));
 		} else {
+			duration.value = setting.short * 60;
 			mode.value = "short";
 			notify("☕ Short Break", pick(quotes.short));
 		}
 	} else {
+		duration.value = setting.pomodoro * 60;
 		mode.value = "pomodoro";
 		notify("🍅 Pomodoro", pick(quotes.pomodoro));
 	}
 	remain.value = duration.value;
-	Start();
 }
 
 function pick(arr) {
@@ -366,29 +404,38 @@ button {
 	width: 100%;
 	padding: 0.5rem 0;
 }
-#clock {
-	aspect-ratio: 1 / 1;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 75%;
-	border-radius: 50%;
+#countClock {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    border-radius: 50%;
+}
+#pomodoroClock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    height: 95%;
+    background-color: red;
+    border-radius: 50%;
 }
 #countdown {
-	user-select: none;
-	font-variant-numeric: tabular-nums;
-	font-feature-settings: "tnum";
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 95%;
-	height: 95%;
-	background-color: var(--bgc3);
-	border-radius: 50%;
-	font-size: 3rem;
-	font-family: Consolas, "Courier New", monospace;
-	font-weight: 900;
-	color: var(--theme1);
+    user-select: none;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 97%;
+    height: 97%;
+    background-color: var(--bgc3);
+    border-radius: 50%;
+    font-size: 3rem;
+    font-family: Consolas, "Courier New", monospace;
+    font-weight: 900;
+    color: var(--theme1);
 }
 .button-control {
 	display: flex;
@@ -403,6 +450,10 @@ button {
 	border: none;
 	font-size: 1.2rem;
 	font-weight: 900;
+}
+#Pomodoro button:disabled {
+	background-color: var(--theme2);
+	cursor: not-allowed;
 }
 #Pomodoro button:hover {
 	background-color: var(--theme2);

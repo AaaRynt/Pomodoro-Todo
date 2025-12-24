@@ -6,7 +6,15 @@
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 18H12V20H2V18ZM2 11H22V13H2V11ZM2 4H22V6H2V4ZM18 18V15H20V18H23V20H20V23H18V20H15V18H18Z"></path></svg>
 			</button>
 		</div>
-		<div class="li" v-for="todo in todos" :key="todo.key" :style="{ outline: currentTodo?.key === todo.key ? 'var(--theme1) 2px solid' : 'none' }">
+		<div
+			id="show"
+			:style="{
+				display: todos.length ? 'none' : 'block',
+			}"
+		>
+			No pending TO-DO
+		</div>
+		<div class="li" v-for="todo in todos" :key="todo.key" :style="{ outline: todo.key === currentTodo?.key ? 'var(--theme1) 2px solid' : 'none' }">
 			<button type="button" class="ok" @click="complete(todo)">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 					<path fill="none" d="M0 0h24v24H0z"></path>
@@ -22,9 +30,7 @@
 			</button>
 			<button type="button" class="delete" @click="remove(todo)">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-					<path
-						d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"
-					></path>
+					<path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
 				</svg>
 			</button>
 			<span class="time">{{ todo.addAt }}</span>
@@ -99,12 +105,18 @@ input {
 	font-size: 1.25rem;
 	font-family: "Delius", cursive;
 	color: var(--font2);
+	transition: outline 0.1s, border 0.1s;
 }
 input:focus {
 	outline: var(--theme1) solid;
-	transition: outline 0.2s, border 0.2s;
-	background-color: var(--bgc1);
+	background-color: var(--bgc3);
 	border: var(--theme3) solid;
+}
+#show {
+	text-align: center;
+	font-size: 1.25rem;
+	color: var(--font2);
+	font-style: italic;
 }
 .li {
 	display: flex;

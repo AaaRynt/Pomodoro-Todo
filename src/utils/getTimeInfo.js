@@ -6,7 +6,7 @@ export function getTimeInfo() {
 		year: now.getFullYear(),
 		month: now.getMonth() + 1,
 		date: now.getDate(),
-		day:week[now.getDay()],
+		day: week[now.getDay()],
 		hour: now.getHours().toString().padStart(2, "0"),
 		minute: now.getMinutes().toString().padStart(2, "0"),
 		second: now.getSeconds().toString().padStart(2, "0"),
