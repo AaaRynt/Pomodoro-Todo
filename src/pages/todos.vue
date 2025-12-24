@@ -6,7 +6,15 @@
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 18H12V20H2V18ZM2 11H22V13H2V11ZM2 4H22V6H2V4ZM18 18V15H20V18H23V20H20V23H18V20H15V18H18Z"></path></svg>
 			</button>
 		</div>
-		<div class="li" v-for="todo in todos" :key="todo.key" :style="{ outline: currentTodo?.key === todo.key ? 'var(--theme1) 2px solid' : 'none' }">
+		<div
+			id="show"
+			:style="{
+				display: todos.length ? 'none' : 'block',
+			}"
+		>
+			No pending TO-DO
+		</div>
+		<div class="li" v-for="todo in todos" :key="todo.key" :style="{ outline: todo.key === currentTodo?.key ? 'var(--theme1) 2px solid' : 'none' }">
 			<button type="button" class="ok" @click="complete(todo)">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 					<path fill="none" d="M0 0h24v24H0z"></path>
@@ -99,12 +107,18 @@ input {
 	font-size: 1.25rem;
 	font-family: "Delius", cursive;
 	color: var(--font2);
+	transition: outline 0.1s, border 0.1s;
 }
 input:focus {
 	outline: var(--theme1) solid;
-	transition: outline 0.2s, border 0.2s;
-	background-color: var(--bgc1);
+	background-color: var(--bgc3);
 	border: var(--theme3) solid;
+}
+#show {
+	text-align: center;
+	font-size: 1.25rem;
+	color: var(--font2);
+	font-style: italic;
 }
 .li {
 	display: flex;

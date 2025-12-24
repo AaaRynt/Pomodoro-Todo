@@ -107,7 +107,7 @@
 </template>
 
 <script setup>
-import { todos, completedTodos, pomodoroTotal, focusTotal, breakTotal, earlyCompletions } from "@/store/todo";
+import { completedTodos, pomodoroTotal, focusTotal, breakTotal, earlyCompletions } from "@/store/todo";
 
 function totalTime(sec) {
 	const h = Math.floor(sec / 3600);
@@ -136,7 +136,6 @@ function exportCSV() {
 function reset() {
 	const OK = confirm("Are you sure?");
 	if (OK) {
-		todos.value = [];
 		completedTodos.value = [];
 		pomodoroTotal.value = 0;
 		focusTotal.value = 0;

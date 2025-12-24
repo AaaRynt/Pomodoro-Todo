@@ -19,28 +19,28 @@
 		<fieldset id="duration">
 			<legend><a href="https://en.wikipedia.org/wiki/Pomodoro_Technique#Description" target="_blank">Duration setting</a></legend>
 			<div class="range_set">
-				<label for="pomodoro">Pomodoro </label><span>{{ setting.pomodoro }} mins</span>
+				<label for="pomodoro">Pomodoro</label><span>{{ setting.pomodoro }}&nbspmins</span>
 			</div>
 			<!-- BUG:input[type="range"].value === 50
 			<input type="range" id="pomodoro" step="1" min="10" max="60" v-model.number="setting.pomodoro" /> -->
-			<input type="range" id="pomodoro" step="1" min="1" max="60" :value="setting.pomodoro ?? 25" @input="setting.pomodoro = Number($event.target.value)" />
+			<input type="range" id="pomodoro" step="5" min="10" max="60" :value="setting.pomodoro ?? 25" @input="setting.pomodoro = Number($event.target.value)" />
 			<br />
 			<div class="range_set">
-				<label for="short">Short Break</label><span>{{ setting.short }} mins</span>
+				<label for="short">Short Break</label><span>{{ setting.short }}&nbspmins</span>
 			</div>
 			<!-- BUG: input[type="range"].value === 50
 			<input type="range" id="short" step="1" min="3" max="15" v-model.number="setting.short" /> -->
 			<input type="range" id="short" step="1" min="3" max="15" :value="setting.short ?? 5" @input="setting.short = Number($event.target.value)" />
 			<br />
 			<div class="range_set">
-				<label for="long">Long Break</label><span>{{ setting.long }} mins</span>
+				<label for="long">Long Break</label><span>{{ setting.long }}&nbspmins</span>
 			</div>
 			<!-- BUG:input[type="range"].value === 50
 			<input type="range" id="long" step="1" min="10" max="30" v-model.number="setting.long" /> -->
 			<input type="range" id="long" step="1" min="10" max="30" :value="setting.long ?? 25" @input="setting.long = Number($event.target.value)" />
 			<br />
 			<div class="range_set">
-				<label for="interval">Interval</label><span>{{ setting.interval }} done</span>
+				<label for="interval">Long Break Interval</label><span>Every&nbsp{{ setting.interval }}&nbspdone</span>
 			</div>
 			<!-- BUG:input[type="range"].value === 50
 			<input type="range" id="interval" step="1" min="2" max="6" v-model.number="setting.interval" /> -->
@@ -188,6 +188,6 @@ a {
 	text-decoration: none;
 }
 a:hover {
-	text-decoration: underline solid;
+	text-decoration: underline solid var(--theme1);
 }
 </style>
