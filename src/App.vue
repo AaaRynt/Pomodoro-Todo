@@ -105,6 +105,9 @@ import { todos, completedTodos, currentTodo, pomodoroTotal, focusTotal, breakTot
 import { getTimeInfo } from "@/utils/getTimeInfo";
 import emojis from "@/assets/emojis.json";
 import quotes from "@/assets/quotes.json";
+import pomodoroMp3 from "@/assets/pencil_check_mark_1-88805.mp3";
+import shortMp3 from "@/assets/ding-126626.mp3";
+import longMp3 from "@/assets/ding-47489.mp3";
 
 const mode = ref("pomodoro"); // ...pomodoro | short | long |...
 const tip = ref(true);
@@ -124,6 +127,11 @@ const time = reactive({
 	second: "00",
 	blink: true,
 });
+const sounds = {
+    pomodoro: new Audio(pomodoroMp3),
+    short: new Audio(shortMp3),
+    long: new Audio(longMp3),
+};
 let timer = null;
 let countdownTimer = null;
 
@@ -150,53 +158,47 @@ const progress = computed(() => {
 });
 
 onMounted(() => {
-    duration.value = setting.pomodoro * 60;
-    remain.value = duration.value;
-    updateTime();
-    timer = setInterval(updateTime, 1000);
-
-    if (!("Notification" in window)) return;
-    if (Notification.permission === "granted") {
-        notify("🍅📑", "Before you start Pomodoro, please select one To-Do!");
-    } else if (Notification.permission === "default") {
-        Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-                notify("🍅📑", "Before you start Pomodoro, please select one To-Do!");
-            }
-        });
-    }
+	duration.value = setting.pomodoro * 60;
+	remain.value = duration.value;
+	updateTime();
+	timer = setInterval(updateTime, 1000);
+	if (!("Notification" in window) || !setting.notify) return;
+	if (Notification.permission === "granted") {
+		notify("🍅📑", "Before you start Pomodoro, please select one To-Do!");
+	} else if (Notification.permission === "default") {
+		Notification.requestPermission().then((permission) => {
+			if (permission === "granted") {
+				notify("🍅📑", "Before you start Pomodoro, please select one To-Do!");
+			}
+		});
+	}
 });
 onUnmounted(() => {
 	clearInterval(timer);
 	clearInterval(countdownTimer);
 });
 watch(
-	() => setting.pomodoro,
+	() => [mode.value, setting.pomodoro, setting.short, setting.long],
 	() => {
-		if (!hasStarted.value && mode.value === "pomodoro") {
-			duration.value = setting.pomodoro * 60;
-			remain.value = duration.value;
-		}
+		if (hasStarted.value) return;
+		const map = {
+			pomodoro: setting.pomodoro,
+			short: setting.short,
+			long: setting.long,
+		};
+		duration.value = map[mode.value] * 60;
+		remain.value = duration.value;
 	}
 );
-watch(
-	() => setting.short,
-	() => {
-		if (!hasStarted.value && mode.value === "short") {
-			duration.value = setting.short * 60;
-			remain.value = duration.value;
-		}
+watch(todos, () => {
+	if (currentTodo.value && !todos.value.some((t) => t.key === currentTodo.value.key)) {
+		currentTodo.value = null;
+		Pause();
+		hasStarted.value = false;
+		duration.value = setting.pomodoro * 60;
+		remain.value = duration.value;
 	}
-);
-watch(
-	() => setting.long,
-	() => {
-		if (!hasStarted.value && mode.value === "long") {
-			duration.value = setting.long * 60;
-			remain.value = duration.value;
-		}
-	}
-);
+});
 
 function Start() {
 	if (!currentTodo.value?.name && mode.value === "pomodoro") return;
@@ -208,17 +210,16 @@ function Start() {
 			if (mode.value === "pomodoro") focusTotal.value++;
 			else breakTotal.value++;
 		} else {
-			clearInterval(countdownTimer);
-			isCountdown.value = false;
+			Pause();
 			hasStarted.value = false;
 			if (mode.value === "pomodoro") pomodoroTotal.value++;
 			handleFinish();
 		}
 	}, 1000);
+	unlockSound();
 }
 function Again() {
-	clearInterval(countdownTimer);
-	isCountdown.value = false;
+	Pause();
 	hasStarted.value = false;
 	switch (mode.value) {
 		case "pomodoro":
@@ -238,8 +239,7 @@ function Pause() {
 	isCountdown.value = false;
 }
 function Finish() {
-	clearInterval(countdownTimer);
-	isCountdown.value = false;
+	Pause();
 	hasStarted.value = false;
 	remain.value = 0;
 	earlyCompletions.value++;
@@ -253,6 +253,7 @@ function handleFinish() {
 		currentTodo.value.doneAt = `${info.month}/${info.date} ${info.hour}:${info.minute}`;
 		completedTodos.value.push({ ...currentTodo.value });
 		todos.value = todos.value.filter((todo) => !todo.doneTime);
+		playSound(sounds.pomodoro);
 		currentTodo.value = null;
 		pomodoroCount.value++;
 		if (pomodoroCount.value % setting.interval === 0) {
@@ -265,6 +266,8 @@ function handleFinish() {
 			notify("☕ Short Break", pick(quotes.short));
 		}
 	} else {
+		if (mode.value === "short") playSound(sounds.short);
+		else playSound(sounds.long);
 		duration.value = setting.pomodoro * 60;
 		mode.value = "pomodoro";
 		notify("🍅 Pomodoro", pick(quotes.pomodoro));
@@ -279,12 +282,27 @@ function updateTime() {
 	Object.assign(time, getTimeInfo());
 	time.blink = !time.blink;
 }
+function playSound(audio) {
+	if (!setting.sound) return;
+	audio.currentTime = 0;
+	audio.play();
+}
 function notify(title, body) {
-	if ("Notification" in window && Notification.permission === "granted") {
-		new Notification(title, {
-			body,
-		});
-	}
+	if (!setting.notify) return;
+	new Notification(title, { body });
+}
+function unlockSound() {
+	Object.values(sounds).forEach((sound) => {
+		sound.muted = true;
+		sound
+			.play()
+			.then(() => {
+				sound.pause();
+				sound.currentTime = 0;
+				sound.muted = false;
+			})
+			.catch(() => {});
+	});
 }
 </script>
 
@@ -438,66 +456,66 @@ button {
     color: var(--theme1);
 }
 .button-control {
-	display: flex;
-	justify-content: space-evenly;
-	align-items: center;
-	width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 90%;
 }
 #Pomodoro button {
-	width: 6rem;
-	padding: 0.4rem 0;
-	transition: background-color 0.2s;
-	border: none;
-	font-size: 1.2rem;
-	font-weight: 900;
+    width: 6rem;
+    padding: 0.4rem 0;
+    transition: background-color 0.2s;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 900;
 }
 #Pomodoro button:disabled {
-	background-color: var(--theme2);
-	cursor: not-allowed;
+    background-color: var(--theme2);
+    cursor: not-allowed;
 }
 #Pomodoro button:hover {
-	background-color: var(--theme2);
+    background-color: var(--theme2);
 }
 #page {
-	grid-area: page;
-	min-height: 0;
-	margin-top: 0.5rem;
-	border-style: solid;
-	border-radius: 1rem;
+    grid-area: page;
+    min-height: 0;
+    margin-top: 0.5rem;
+    border-style: solid;
+    border-radius: 1rem;
 }
 nav {
-	display: flex;
-	grid-area: nav;
-	padding: 0.1rem;
-	background-color: var(--bgc2);
-	border-style: solid;
-	border-radius: 0.6rem;
-	font-family: "Aldrich", sans-serif;
+    display: flex;
+    grid-area: nav;
+    padding: 0.2rem;
+    background-color: var(--bgc2);
+    border-style: solid;
+    border-radius: 0.6rem;
+    font-family: "Aldrich", sans-serif;
 }
 .control {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 1 1 0;
-	padding: 0.4rem 0;
-	border-radius: 0.4rem;
-	color: var(--font1);
-	text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 0;
+    padding: 0.2rem 0;
+    border-radius: 0.4rem;
+    color: var(--font1);
+    text-decoration: none;
 }
 .control:hover {
-	color: var(--theme2);
+    color: var(--theme2);
 }
 .control.router-link-exact-active {
-	background-color: var(--bgc3);
-	color: var(--theme1);
+    background-color: var(--bgc3);
+    color: var(--theme1);
 }
 footer {
-	grid-area: footer;
-	text-align: center;
+    grid-area: footer;
+    text-align: center;
 }
 .colon {
-	transition: opacity 0.1s;
-	text-shadow: 0 0 2px;
+    transition: opacity 0.1s;
+    text-shadow: 0 0 2px;
 }
 @media (max-width: 768px) {
 	* {
@@ -513,9 +531,6 @@ footer {
 		padding: 0;
 		background-color: var(--bgc2);
 	}
-	#clock {
-		width: 50%;
-	}
 	#Pomodoro {
 		margin: 0;
 	}
@@ -523,8 +538,11 @@ footer {
 		height: 1.5rem;
 		text-align: start;
 	}
+	#countClock {
+		width: 60%;
+	}
 	#page {
-		margin: 0.2rem 0;
+		margin: 0;
 	}
 	nav {
 		border: 0;

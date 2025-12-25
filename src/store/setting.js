@@ -4,6 +4,8 @@ const STORAGE_KEY = "pomodoro-setting";
 const defaultSetting = {
 	theme: "tomato",
 	isDark: true,
+	sound: true,
+	notify: true,
 	pomodoro: 25,
 	short: 5,
 	long: 20,

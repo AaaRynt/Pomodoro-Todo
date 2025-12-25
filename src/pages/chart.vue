@@ -173,7 +173,7 @@ td {
 	padding: 0.5rem 0rem 0.5rem 0.5rem;
 }
 #todo-name {
-	text-decoration: line-through var(--theme1) solid;
+	text-decoration: line-through var(--theme2) solid;
 }
 @media (max-width: 768px) {
 	.media-text {

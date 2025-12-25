@@ -41,10 +41,14 @@
 
 <script setup>
 import { ref } from "vue";
-import { getTimeInfo } from "@/utils/getTimeInfo";
+import { setting } from "@/store/setting";
 import { todos, completedTodos, currentTodo, earlyCompletions } from "@/store/todo";
+import { getTimeInfo } from "@/utils/getTimeInfo";
+import pomodoro from "@/assets/pencil_check_mark_1-88805.mp3";
 
 const text = ref("");
+const pomodoroMp3 = new Audio(pomodoro);
+
 function add() {
 	if (!text.value) {
 		alert("Please enter text.");
@@ -65,6 +69,10 @@ function start(todo) {
 	currentTodo.value = todo;
 }
 function complete(todo) {
+	if (setting.sound) {
+		pomodoroMp3.currentTime = 0;
+		pomodoroMp3.play();
+	}
 	earlyCompletions.value++;
 	const info = getTimeInfo();
 	todo.doneTime = info.timestamp;
