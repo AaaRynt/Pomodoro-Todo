@@ -12,6 +12,7 @@ const defaultSetting = {
 	interval: 4,
 };
 let initial = { ...defaultSetting };
+
 try {
 	const raw = localStorage.getItem(STORAGE_KEY);
 	if (raw) {
