@@ -3,7 +3,7 @@ import { ref, watch } from "vue";
 const STORAGE_KEY = "pomodoro-todos";
 export const todos = ref([]);
 export const completedTodos = ref([]);
-export const currentTodo = ref(null);
+export const activeTodo = ref(null);
 export const pomodoroTotal = ref(0);
 export const focusTotal = ref(0);
 export const breakTotal = ref(0);

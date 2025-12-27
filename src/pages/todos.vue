@@ -14,7 +14,7 @@
 		>
 			No pending To-Do
 		</div>
-		<div class="li" v-for="todo in todos" :key="todo.addTime" :style="{ outline: todo.addTime === currentTodo?.addTime ? 'var(--theme1) 2px solid' : 'none' }">
+		<div class="li" v-for="todo in todos" :key="todo.addTime" :style="{ outline: todo.addTime === activeTodo?.addTime ? 'var(--theme1) 2px solid' : 'none' }">
 			<button type="button" class="ok" @click="complete(todo)">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 					<path fill="none" d="M0 0h24v24H0z"></path>
@@ -40,7 +40,7 @@
 <script setup>
 import { ref } from "vue";
 import { setting } from "@/store/setting";
-import { todos, completedTodos, currentTodo, earlyCompletions } from "@/store/todo";
+import { todos, completedTodos, activeTodo, earlyCompletions } from "@/store/todo";
 import { getTimeInfo } from "@/utils/getTimeInfo";
 import pomodoro from "@/assets/pencil_check_mark_1-88805.mp3";
 
@@ -63,7 +63,7 @@ function add() {
 	text.value = "";
 }
 function start(todo) {
-	currentTodo.value = todo;
+	activeTodo.value = todo;
 }
 function complete(todo) {
 	if (setting.sound) {
@@ -75,8 +75,8 @@ function complete(todo) {
 	todo.doneTime = info.timestamp;
 	todo.doneAt = `${info.month}/${info.date} ${info.hour}:${info.minute}`;
 	completedTodos.value.push({ ...todo });
-	if (currentTodo.value?.addTime === todo.addTime) {
-		currentTodo.value = null;
+	if (activeTodo.value?.addTime === todo.addTime) {
+		activeTodo.value = null;
 	}
 	remove(todo);
 }
@@ -148,6 +148,7 @@ input:focus {
 .name {
 	order: 3;
 	flex-grow: 1;
+	transition: color 0.2s;
 }
 span {
 	display: inline-block;

@@ -1,5 +1,5 @@
 <template>
-	<!-- <pre style="position: absolute; background: #444; opacity: 0.5; color: #fff; font-family: Consolas;">
+<!-- <pre style="position: absolute; background: #444; opacity: 0.5; color: #fff; font-family: Consolas;">
 tip: {{ tip }}
 mode: {{ mode }}
 isCountdown: {{ isCountdown }}
@@ -10,7 +10,7 @@ remain: {{ remain }}
 {{ pomodoroCount }}/{{ setting.interval }}
 endAt:      {{ endAt }}
 lastTickAt: {{ lastTickAt }}
-{{ currentTodo }}
+{{ activeTodo }}
 {{ setting }}
 progress:{{ progress.toFixed(2) }}
 timer: {{ timer }}
@@ -18,7 +18,7 @@ countdownTimer: {{ countdownTimer }}
 </pre> -->
 	<div id="body">
 		<div id="Pomodoro">
-			<div id="current" :style="{ fontSize: currentTodo?.name || tip ? '1.5rem' : '3rem' }">{{ displayContent }}</div>
+			<div id="current" :style="{ fontSize: activeTodo?.name || tip ? '1.5rem' : '3rem' }">{{ displayContent }}</div>
 			<div id="box">
 				<div id="countClock" :style="{ background: `conic-gradient(var(--theme3) 0% ${progress}%,var(--theme1) ${progress}% 100%)` }">
 					<div id="pomodoroClock" :style="{ background: mode === 'long' ? 'var(--theme2)' : `conic-gradient(var(--theme2) 0% ${((pomodoroCount % setting.interval) * 100) / setting.interval}%,var(--bgc3) ${((pomodoroCount % setting.interval) * 100) / setting.interval}% 100%)` }">
@@ -27,7 +27,7 @@ countdownTimer: {{ countdownTimer }}
 				</div>
 			</div>
 			<div class="button-control">
-				<button type="button" :style="{ display: isCountdown ? 'none' : 'flex', disabled: !currentTodo?.name && mode === 'pomodoro' }" @click="Start" :disabled="!currentTodo?.name && mode === 'pomodoro'">
+				<button type="button" :style="{ display: isCountdown ? 'none' : 'flex', disabled: !activeTodo?.name && mode === 'pomodoro' }" @click="Start" :disabled="!activeTodo?.name && mode === 'pomodoro'">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 						<path d="M16.3944 12.0001L10 7.7371V16.263L16.3944 12.0001ZM19.376 12.4161L8.77735 19.4818C8.54759 19.635 8.23715 19.5729 8.08397 19.3432C8.02922 19.261 8 19.1645 8 19.0658V4.93433C8 4.65818 8.22386 4.43433 8.5 4.43433C8.59871 4.43433 8.69522 4.46355 8.77735 4.5183L19.376 11.584C19.6057 11.7372 19.6678 12.0477 19.5146 12.2774C19.478 12.3323 19.4309 12.3795 19.376 12.4161Z"></path></svg
 					>{{ mode === "pomodoro" ? "START" : "RELAX" }}
@@ -89,7 +89,7 @@ countdownTimer: {{ countdownTimer }}
 <script setup>
 import { onMounted, onUnmounted, ref, reactive, computed, watch } from "vue";
 import { setting } from "@/store/setting";
-import { todos, completedTodos, currentTodo, pomodoroTotal, focusTotal, breakTotal, earlyCompletions } from "@/store/todo";
+import { todos, completedTodos, activeTodo, pomodoroTotal, focusTotal, breakTotal, earlyCompletions } from "@/store/todo";
 import { getTimeInfo } from "@/utils/getTimeInfo";
 import emojis from "@/assets/emojis.json";
 import quotes from "@/assets/quotes.json";
@@ -126,9 +126,9 @@ let timer = null;
 let countdownTimer = null;
 
 const displayContent = computed(() => {
-	if (currentTodo.value) {
+	if (activeTodo.value) {
 		tip.value = false;
-		return currentTodo.value.name;
+		return activeTodo.value.name;
 	} else if (tip.value) {
 		return "Select one todo to start.";
 	} else {
@@ -181,8 +181,8 @@ watch(
 	}
 );
 watch(todos, () => {
-	if (currentTodo.value && !todos.value.some((t) => t.addTime === currentTodo.value.addTime)) {
-		currentTodo.value = null;
+	if (activeTodo.value && !todos.value.some((t) => t.addTime === activeTodo.value.addTime)) {
+		activeTodo.value = null;
 		Pause();
 		hasStarted.value = false;
 		duration.value = setting.pomodoro * 60;
@@ -190,9 +190,9 @@ watch(todos, () => {
 	}
 });
 
-// 基于 *时间戳* 计算，而非浏览器setInterval(()=>{remain.value--},1000)，以防止浏览器最小化时后台节流机制(Timer Throttling)
+// Timing implementation Remaining time is calculated using Date.now() and a target timestamp, rather than decrementing via setInterval(() => { remain.value--; }, 1000);. This fundamentally avoids inaccuracies caused by browser browser background throttling(Timer Throttling).
 function Start() {
-	if ((!currentTodo.value?.name && mode.value === "pomodoro") || isCountdown.value) return;
+	if ((!activeTodo.value?.name && mode.value === "pomodoro") || isCountdown.value) return;
 	isCountdown.value = true;
 	hasStarted.value = true;
 
@@ -253,12 +253,12 @@ function Finish() {
 function handleFinish() {
 	if (mode.value === "pomodoro") {
 		const info = getTimeInfo();
-		currentTodo.value.doneTime = info.timestamp;
-		currentTodo.value.doneAt = `${info.month}/${info.date} ${info.hour}:${info.minute}`;
-		completedTodos.value.push({ ...currentTodo.value });
+		activeTodo.value.doneTime = info.timestamp;
+		activeTodo.value.doneAt = `${info.month}/${info.date} ${info.hour}:${info.minute}`;
+		completedTodos.value.push({ ...activeTodo.value });
 		todos.value = todos.value.filter((todo) => !todo.doneTime);
 		playSound(sounds.pomodoro);
-		currentTodo.value = null;
+		activeTodo.value = null;
 		pomodoroCount.value++;
 		if (pomodoroCount.value % setting.interval === 0) {
 			duration.value = setting.long * 60;
@@ -433,6 +433,7 @@ button {
 	border-radius: 50%;
 }
 #pomodoroClock {
+	container-type: inline-size;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -451,7 +452,7 @@ button {
 	height: 97%;
 	background-color: var(--bgc3);
 	border-radius: 50%;
-	font-size: 3rem;
+	font-size: clamp(1rem, 20cqw, 4rem);
 	font-family: Consolas, "Courier New", monospace;
 	font-weight: 900;
 	color: var(--theme1);
@@ -517,7 +518,7 @@ footer {
 }
 .colon {
 	transition: opacity 0.1s;
-	text-shadow: 0 0 2px;
+	text-shadow: 0 0 2px currentColor;
 }
 @media (max-width: 768px) {
 	#body {
