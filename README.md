@@ -55,7 +55,7 @@ This project **binds the two together**:
 
 - Five theme colors
   ![THEME](/Image/THEME.png)
-- _Light_ / _Dark_ mode
+- _Dark_ / _Light_ mode switch
   ![Setting](/Image/Setting.png)
 - To-Do view
   ![To-Do](/Image/To-Do.png)

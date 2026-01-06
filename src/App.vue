@@ -69,9 +69,9 @@ countdownTimer: {{ countdownTimer }}
 			</RouterLink>
 		</nav>
 
-		<div id="page">
+		<section>
 			<RouterView />
-		</div>
+		</section>
 
 		<footer class="mono">
 			<time :datetime="time.timestamp">{{ time.year }}-{{ time.month.toString().padStart(2, "0") }}-{{ time.date.toString().padStart(2, "0") }}&nbsp{{ time.day }}&nbsp</time>
@@ -355,7 +355,7 @@ function unlockSound() {
 	grid-template-columns: 2fr 3fr;
 	grid-template-areas:
 		"Pomodoro nav"
-		"Pomodoro page"
+		"Pomodoro section"
 		"footer footer";
 	height: 100%;
 	padding: 1rem 1rem 0 1rem;
@@ -478,8 +478,8 @@ button {
 #Pomodoro button:hover {
 	background-color: var(--theme2);
 }
-#page {
-	grid-area: page;
+section {
+	grid-area: section;
 	min-height: 0;
 	margin-top: 0.5rem;
 	border: solid 2px var(--bgc3);
@@ -526,14 +526,14 @@ footer {
 		grid-template-columns: 1fr;
 		grid-template-areas:
 			"Pomodoro"
-			"page"
+			"section"
 			"nav";
 		padding: 0;
 		background-color: var(--bgc2);
 	}
 	#Pomodoro,
 	nav,
-	#page {
+	section {
 		margin: 0;
 		border: 0;
 	}

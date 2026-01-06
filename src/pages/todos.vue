@@ -6,14 +6,14 @@
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 18H12V20H2V18ZM2 11H22V13H2V11ZM2 4H22V6H2V4ZM18 18V15H20V18H23V20H20V23H18V20H15V18H18Z"></path></svg>
 			</button>
 		</div>
-		<div
+		<p
 			id="show"
 			:style="{
 				display: todos.length ? 'none' : 'block',
 			}"
 		>
 			No pending To-Do
-		</div>
+		</p>
 		<div class="li" v-for="todo in todos" :key="todo.addTime" :style="{ outline: todo.addTime === activeTodo?.addTime ? 'var(--theme1) 2px solid' : 'none' }">
 			<button type="button" class="ok" @click="complete(todo)">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

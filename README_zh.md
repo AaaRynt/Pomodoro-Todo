@@ -55,7 +55,7 @@
 
 - 五种主题色
   ![THEME](/Image/THEME.png)
-- _日_/ _夜_ 间切换
+- _深色_/ _浅色_ 模式切换
   ![Setting](/Image/Setting.png)
 - To-Do 视图
   ![To-Do](/Image/To-Do.png)
