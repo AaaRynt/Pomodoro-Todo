@@ -7,7 +7,7 @@
 [![Remix Icon](https://img.shields.io/badge/SVG%20from-Remix%20Icon-0066ff.svg)](https://remixicon.com/)
 
 一个为**真实长期使用**而设计的 番茄钟 + To-Do 专注工具。
-项目地址：_[https://aaarynt.github.io/Pomodoro-Todo/](https://aaarynt.github.io/Pomodoro-Todo/)_
+项目地址：<https://aaarynt.github.io/Pomodoro-Todo/>
 
 ---
 
@@ -15,8 +15,8 @@
 
 市面上有很多番茄钟，也有很多 To-Do 应用，但两者往往是割裂的：
 
-- 番茄钟只关心时间，不关心你到底*在做什么*。
-- To-Do 只记录完成状态，不关心你付出了多少*专注时间*。
+- 番茄钟只关心时间，不关心你到底 _在做什么_。
+- To-Do 只记录完成状态，不关心你付出了多少 _专注时间_。
 
 这个前端项目把两者**绑定在一起**：
 
@@ -105,7 +105,7 @@ npm install
 npm run dev
 ```
 
-浏览器打开 _http://localhost:5173_ 查看效果。
+浏览器打开 <http://localhost:5173> 查看效果。
 
 ---
 
@@ -119,7 +119,7 @@ npm run dev
 
 **请通过根路径访问本项目！**
 
-https://aaarynt.github.io/Pomodoro-Todo/
+<https://aaarynt.github.io/Pomodoro-Todo/>
 
 或使用站内导航进行页面切换。
 

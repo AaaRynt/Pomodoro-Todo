@@ -7,7 +7,7 @@
 [![Remix Icon](https://img.shields.io/badge/SVG%20from-Remix%20Icon-0066ff.svg)](https://remixicon.com/)
 
 A Pomodoro + To-Do focus tool designed for **real-world, long-term use**.
-Live demo: _[https://aaarynt.github.io/Pomodoro-Todo/](https://aaarynt.github.io/Pomodoro-Todo/)_
+Live demo: <https://aaarynt.github.io/Pomodoro-Todo/>
 
 ---
 
@@ -105,7 +105,7 @@ npm install
 npm run dev
 ```
 
-Open _[http://localhost:5173](http://localhost:5173)_ in your browser.
+Open <http://localhost:5173> in your browser.
 
 ---
 
@@ -119,7 +119,7 @@ Refreshing the page on a non-root route (e.g. `/todos`) will result in a **_404_
 
 **Please access the project via the root path:**
 
-[https://aaarynt.github.io/Pomodoro-Todo/](https://aaarynt.github.io/Pomodoro-Todo/)
+<https://aaarynt.github.io/Pomodoro-Todo/>
 
 or navigate using in-app links.
 
