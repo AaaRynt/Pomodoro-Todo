@@ -8,7 +8,7 @@ pomodoroCount: {{ pomodoroCount }}
 duration:{{ duration }}
 remain: {{ remain }}
 {{ pomodoroCount }}/{{ setting.interval }}
-endAt:      {{ endAt }}
+endAt: {{ endAt }}
 lastTickAt: {{ lastTickAt }}
 {{ activeTodo }}
 {{ setting }}
@@ -121,13 +121,15 @@ import { getTimeInfo } from '@/utils/getTimeInfo'
 import pomodoroMp3 from '@/assets/audio/pencil_check_mark_1-88805.mp3'
 import shortMp3 from '@/assets/audio/ding-126626.mp3'
 import longMp3 from '@/assets/audio/ding-47489.mp3'
-import RiFileChartLine from './assets/icons/RiFileChartLine.vue'
-import RiForwardEndLine from './assets/icons/RiForwardEndLine.vue'
-import RiPauseLine from './assets/icons/RiPauseLine.vue'
-import RiPlayLine from './assets/icons/RiPlayLine.vue'
-import RiRestartLine from './assets/icons/RiRestartLine.vue'
-import RiSettings3Line from './assets/icons/RiSettings3Line.vue'
-import RiTodoLine from './assets/icons/RiTodoLine.vue'
+import {
+  RiFileChartLine,
+  RiForwardEndLine,
+  RiPauseLine,
+  RiPlayLine,
+  RiRestartLine,
+  RiSettings3Line,
+  RiTodoLine,
+} from '@/assets/icons'
 import emojis from '@/assets/json/emojis.json'
 import quotes from '@/assets/json/quotes.json'
 
@@ -169,12 +171,13 @@ const displayContent = computed(() => {
     return pick(emojis)
   }
 })
-// prettier-ignore
 const result = computed(() => {
-	const min = Math.floor(remain.value / 60).toString().padStart(2, "0");
-	const sec = (remain.value % 60).toString().padStart(2, "0");
-	return `${min}:${sec}`;
-});
+  const min = Math.floor(remain.value / 60)
+    .toString()
+    .padStart(2, '0')
+  const sec = (remain.value % 60).toString().padStart(2, '0')
+  return `${min}:${sec}`
+})
 const progress = computed(() => {
   if (duration.value === 0) return 0
   if (!hasStarted.value) return 100
@@ -224,7 +227,7 @@ watch(todos, () => {
   }
 })
 
-// Timing implementation Remaining time is calculated using Date.now() and a target timestamp, rather than decrementing via setInterval(() => { remain.value--; }, 1000);. This fundamentally avoids inaccuracies caused by browser browser background throttling(Timer Throttling).
+// Timing implementation Remaining time is calculated using Date.now() and a target timestamp, rather than decrementing via setInterval(() => { remain.value--; }, 1000);. This fundamentally avoids inaccuracies caused by browser browser background throttling(Timer Throttling)."../README.md"
 function Start() {
   if ((!activeTodo.value?.name && mode.value === 'pomodoro') || isCountdown.value) return
   isCountdown.value = true

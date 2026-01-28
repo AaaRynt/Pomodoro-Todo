@@ -61,15 +61,17 @@ import {
   breakTotal,
   earlyCompletions,
 } from '@/store/todo'
-import RiAlarmLine from '../assets/icons/RiAlarmLine.vue'
-import RiCheckDoubleLin from '../assets/icons/RiCheckDoubleLin.vue'
-import RiCupLine from '../assets/icons/RiCupLine.vue'
-import RiRefreshLine from '../assets/icons/RiRefreshLine.vue'
-import RiTargetLine from '../assets/icons/RiTargetLine.vue'
-import RiTimerFlashLine from '../assets/icons/RiTimerFlashLine.vue'
-import RiTimerLine from '../assets/icons/RiTimerLine.vue'
-import RiUpload2Line from '../assets/icons/RiUpload2Line.vue'
-import RiVerifiedBadgeLine from '../assets/icons/RiVerifiedBadgeLine.vue'
+import {
+  RiAlarmLine,
+  RiCheckDoubleLin,
+  RiCupLine,
+  RiRefreshLine,
+  RiTargetLine,
+  RiTimerFlashLine,
+  RiTimerLine,
+  RiUpload2Line,
+  RiVerifiedBadgeLine,
+} from '@/assets/icons'
 
 function totalTime(sec) {
   const h = Math.floor(sec / 3600)

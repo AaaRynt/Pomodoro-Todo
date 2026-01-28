@@ -128,11 +128,13 @@
 <script setup>
 import { setting } from '@/store/setting'
 import appearance from '@/assets/audio/appearance-effect-6733.mp3'
-import RiRefreshLine from '../assets/icons/RiRefreshLine.vue'
-import RiNotification4Fill from '../assets/icons/RiNotification4Fill.vue'
-import RiNotificationOffLine from '../assets/icons/RiNotificationOffLine.vue'
-import RiVolumeMuteLine from '../assets/icons/RiVolumeMuteLine.vue'
-import RiVolumeUpFill from '../assets/icons/RiVolumeUpFill.vue'
+import {
+  RiRefreshLine,
+  RiNotification4Fill,
+  RiNotificationOffLine,
+  RiVolumeMuteLine,
+  RiVolumeUpFill,
+} from '@/assets/icons'
 
 const colors = ['tomato', 'sandybrown', 'seagreen', 'skyblue', 'violet']
 const appearanceMp3 = new Audio(appearance)

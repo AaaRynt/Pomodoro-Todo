@@ -6,7 +6,7 @@
 [![Vue.js](https://img.shields.io/badge/Made%20with-Vue.js-42b883.svg)](https://vuejs.org/)
 [![Remix Icon](https://img.shields.io/badge/SVG%20from-Remix%20Icon-0066ff.svg)](https://remixicon.com/)
 
-A Pomodoro + To-Do focus tool designed for **real-world, long-term use**.
+A Pomodoro + To-Do focus tool designed for **real, long-term use**.With feature-complete with elegant UI/UX, optimized for cross-device compatibility and diverse usage scenarios.
 Live demo: <https://aaarynt.github.io/Pomodoro-Todo/>
 
 ---
@@ -28,7 +28,7 @@ This project **binds the two together**:
 ## Features
 
 - Automatic switching between _Pomodoro_ / _Short Break_ / _Long Break_
-- Timestamp-based time calculation to avoid [browser background throttling(Timer Throttling)](https://developer.chrome.com/blog/timer-throttling-in-chrome-88).
+- Uses `Date.now()` **timestamp-based** calculation for precise remaining time, instead of decrementing via `setInterval()`.This fundamentally avoids inaccuracies caused by browser [browser background throttling(Timer Throttling)](https://developer.chrome.com/blog/timer-throttling-in-chrome-88).
 - Manual control during timing: _Pause_ / _Again_ / _Finish_
 - _To-Do_ management (_active_ / _pend_ / _completed_)
 - **Historical statistics and completion records**
@@ -39,15 +39,16 @@ This project **binds the two together**:
   - Completed _To-Do_ statistics
 - Export completed _To-Do_ as `.CSV`
 - Persistent local storage (data survives reloads, reset supported)
+- All data is stored locally using `localStorage`(data survives reloads, reset supported)
+- **Notifications (optional)**
+  - Sound alerts for _Pomodoro_ / _Short Break_ / _Long Break_
+  - Desktop notifications
+  - Random [emoji](https://github.com/AaaRynt/Pomodoro-Todo/blob/main/src/assets/json/emojis.json) and [quotes](https://github.com/AaaRynt/Pomodoro-Todo/blob/main/src/assets/json/quotes.json)
+- Customizable focus and break durations
 - **Theme system**
   - Automatic light / dark mode
   - Customizable accent colors
-- **Notifications (optional)**
-  - Random emojis and quotes
-  - Sound alerts for _Pomodoro_ / _Short Break_ / _Long Break_
-  - Desktop notifications
-- Customizable focus and break durations
-- **Responsive layout**: optimized for both desktop and mobile
+  - Responsive layout, optimized for different window or screen sizes
 
 ---
 
@@ -63,20 +64,6 @@ This project **binds the two together**:
   ![table](/Image/table.png)
 - Mobile interface
   ![phone](/Image/Phone.jpg)
-
----
-
-## Design Philosophy
-
-- **Task-driven focus**
-  Each _Pomodoro_ session must be **associated** with a _To-Do_ item. No task, no timer.
-- **Timing implementation**
-  Remaining time is calculated using `Date.now()` and a target timestamp, rather than decrementing via `setInterval()`.
-  This fundamentally avoids inaccuracies caused by browser [browser background throttling(Timer Throttling)](https://developer.chrome.com/blog/timer-throttling-in-chrome-88).
-- **No accounts, no network dependency**
-  All data is stored locally using `localStorage`. Full user ownership, zero server reliance.
-- **Built for daily use, not demos**
-  A restrained UI, explicit interactions, and adaptability across devices and usage scenarios.
 
 ---
 
@@ -112,10 +99,8 @@ Open <http://localhost:5173> in your browser.
 ## ⚠️ Notes on Deployment
 
 This project is deployed on GitHub Pages.
-
 Since GitHub Pages is a static hosting service, it does not support SPA history-based routing.
-
-Refreshing the page on a non-root route (e.g. `/todos`) will result in a **_404_**.
+Refreshing the page on a non-root route (e.g. `/todos`) will result in a _404_.
 
 **Please access the project via the root path:**
 

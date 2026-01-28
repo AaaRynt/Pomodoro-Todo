@@ -6,7 +6,7 @@
 [![Vue.js](https://img.shields.io/badge/Made%20with-Vue.js-42b883.svg)](https://cn.vuejs.org/)
 [![Remix Icon](https://img.shields.io/badge/SVG%20from-Remix%20Icon-0066ff.svg)](https://remixicon.com/)
 
-一个为**真实长期使用**而设计的 番茄钟 + To-Do 专注工具。
+一个为**真实长期使用**而设计的 番茄钟 + To-Do 专注工具。功能完善、UI&UX美观，适配不同设备与使用场景
 项目地址：<https://aaarynt.github.io/Pomodoro-Todo/>
 
 ---
@@ -28,7 +28,7 @@
 ## 主要功能
 
 - 自动切换 _番茄钟_ / _短休息_ / _长休息_
-- 基于时间戳计算，避免浏览器[后台节流机制(Timer Throttling)](https://developer.chrome.com/blog/timer-throttling-in-chrome-88?hl=zh-cn)
+- 使用 `Date.now()` 基于**时间戳**计算剩余时间，而非依赖 `setInterval()` 递减。从根本上避免浏览器[后台节流机制(Timer Throttling)](https://developer.chrome.com/blog/timer-throttling-in-chrome-88?hl=zh-cn)导致的计时不准问题。
 - 计时过程中可手动 _暂停_ / _重新开始_ / _完成_
 - _To-Do_ 管理（_进行中_ / _待处理_ / _已完成_）
 - **历史数据统计与完成记录展示**
@@ -38,16 +38,16 @@
   - 提前完成次数
   - 完成的 _To-Do_ 统计
 - 完成的 _To-Do_ 支持导出 `.CSV`
-- 本地持久化存储（重新加载页面不丢数据，可重置）
+- 使用 `localStorage` 本地存储，（重新加载页面不丢数据，可重置）
+- **提醒功能（可关闭）**
+  - 番茄、短休、长休[音效提醒](https://github.com/AaaRynt/Pomodoro-Todo/tree/main/src/assets/audio)
+  - 桌面端通知支持
+  - 随机 [emoji](https://github.com/AaaRynt/Pomodoro-Todo/blob/main/src/assets/json/emojis.json)、[提示语](https://github.com/AaaRynt/Pomodoro-Todo/blob/main/src/assets/json/quotes.json)
+- 计时时长、休息间隔自定义
 - **主题模式**
   - 暗黑模式 / 亮色模式自动切换
   - 可自定义主题色
-- **提醒功能（可关闭）**
-  - 随机 emoji、提示语
-  - 番茄、短休、长休音效提醒
-  - 桌面通知支持
-- 计时时长、休息间隔自定义
-- **响应式布局**：PC / 手机端自适应
+  - 响应式布局，自适应不同窗口或屏幕尺寸
 
 ---
 
@@ -63,20 +63,6 @@
   ![table](/Image/table.png)
 - 手机端界面
   ![phone](/Image/Phone.jpg)
-
----
-
-## 设计理念
-
-- **任务驱动专注:**  
-  每个 _番茄钟_ 须要**绑定**一个 _To-Do_，没有任务就无法开始计时。
-- **计时实现说明**
-  本项目使用 `Date.now()` + 目标时间戳计算剩余时间，而非依赖 `setInterval()` 递减。
-  从根本上避免浏览器[后台节流机制(Timer Throttling)](https://developer.chrome.com/blog/timer-throttling-in-chrome-88?hl=zh-cn)导致的计时不准问题。
-- **无需账号、无需联网:**  
-  使用 `localStorage` 本地存储，数据完全掌控在用户自己手里。
-- **为长期使用而不是展示而设计:**  
-  UI 克制、交互明确，适配不同设备与使用场景
 
 ---
 
@@ -112,11 +98,8 @@ npm run dev
 ## ⚠️ 注意事项
 
 本项目部署在 GitHub Pages 上，
-
 由于 Pages 为静态托管，不支持 SPA 的 history 路由回退，
-
-因此在非根路径（如 `/todos`）下刷新页面会出现 **_404_**。
-
+因此在非根路径（如 `/todos`）下刷新页面会出现 _404_。
 **请通过根路径访问本项目！**
 
 <https://aaarynt.github.io/Pomodoro-Todo/>

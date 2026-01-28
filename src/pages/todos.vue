@@ -49,10 +49,7 @@ import { setting } from '@/store/setting'
 import { todos, completedTodos, activeTodo, earlyCompletions } from '@/store/todo'
 import { getTimeInfo } from '@/utils/getTimeInfo'
 import pomodoro from '@/assets/audio/pencil_check_mark_1-88805.mp3'
-import RiCheckLine from '../assets/icons/RiCheckLine.vue'
-import RiDeleteBinLine from '../assets/icons/RiDeleteBinLine.vue'
-import RiPlayCircleLine from '../assets/icons/RiPlayCircleLine.vue'
-import RiPlayListAddLine from '../assets/icons/RiPlayListAddLine.vue'
+import { RiCheckLine, RiDeleteBinLine, RiPlayCircleLine, RiPlayListAddLine } from '@/assets/icons'
 
 const text = ref('')
 const pomodoroMp3 = new Audio(pomodoro)
