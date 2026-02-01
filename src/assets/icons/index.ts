@@ -8,6 +8,8 @@ import RiForwardEndLine from './RiForwardEndLine.vue'
 import RiNotification4Fill from './RiNotification4Fill.vue'
 import RiNotificationOffLine from './RiNotificationOffLine.vue'
 import RiPauseLine from './RiPauseLine.vue'
+import RiPictureInPicture2Line from './RiPictureInPicture2Line.vue'
+import RiPictureInPictureExitFill from './RiPictureInPictureExitFill.vue'
 import RiPlayCircleLine from './RiPlayCircleLine.vue'
 import RiPlayLine from './RiPlayLine.vue'
 import RiPlayListAddLine from './RiPlayListAddLine.vue'
@@ -34,6 +36,8 @@ export {
   RiNotification4Fill,
   RiNotificationOffLine,
   RiPauseLine,
+  RiPictureInPicture2Line,
+  RiPictureInPictureExitFill,
   RiPlayCircleLine,
   RiPlayLine,
   RiPlayListAddLine,

@@ -1,5 +1,6 @@
 <template>
-<!-- <pre style="position: absolute; background: #444; opacity: 0.5; color: #fff; font-family: Consolas;">
+  <!-- <pre style="position: absolute; background: #444; opacity: 0.5; color: #fff; font-family: monospace; z-index: 999; bottom: 0; right: 0;">
+pipOn: {{ pipOn }}
 tip: {{ tip }}
 mode: {{ mode }}
 isCountdown: {{ isCountdown }}
@@ -17,6 +18,17 @@ timer: {{ timer }}
 countdownTimer: {{ countdownTimer }}
 </pre> -->
   <div id="body">
+    <button
+      id="pip"
+      @click="showPip"
+      :style="{
+        cursor: pipOn ? 'pointer' : 'context-menu',
+        color: pipOn ? 'var(--theme1)' : 'var(--font1)',
+      }"
+    >
+      <RiPictureInPicture2Line :style="{ display: pipOn ? 'none' : 'block' }" />
+      <RiPictureInPictureExitFill :style="{ display: pipOn ? 'block' : 'none' }" />
+    </button>
     <div id="Pomodoro">
       <div id="current" :style="{ fontSize: activeTodo?.name || tip ? '1.5rem' : '3rem' }">
         {{ displayContent }}
@@ -106,7 +118,33 @@ countdownTimer: {{ countdownTimer }}
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, reactive, computed, watch } from 'vue'
+import {
+  computed,
+  createApp,
+  onBeforeUnmount,
+  onMounted,
+  onUnmounted,
+  ref,
+  reactive,
+  watch,
+} from 'vue'
+import pomodoroMp3 from '@/assets/audio/pencil_check_mark_1-88805.mp3'
+import shortMp3 from '@/assets/audio/ding-126626.mp3'
+import longMp3 from '@/assets/audio/ding-47489.mp3'
+import {
+  RiFileChartLine,
+  RiForwardEndLine,
+  RiPauseLine,
+  RiPictureInPicture2Line,
+  RiPictureInPictureExitFill,
+  RiPlayLine,
+  RiRestartLine,
+  RiSettings3Line,
+  RiTodoLine,
+} from '@/assets/icons'
+import emojis from '@/assets/json/emojis.json'
+import quotes from '@/assets/json/quotes.json'
+import pipApp from './pages/pipApp.vue'
 import { setting } from '@/store/setting'
 import {
   todos,
@@ -118,21 +156,8 @@ import {
   earlyCompletions,
 } from '@/store/todo'
 import { getTimeInfo } from '@/utils/getTimeInfo'
-import pomodoroMp3 from '@/assets/audio/pencil_check_mark_1-88805.mp3'
-import shortMp3 from '@/assets/audio/ding-126626.mp3'
-import longMp3 from '@/assets/audio/ding-47489.mp3'
-import {
-  RiFileChartLine,
-  RiForwardEndLine,
-  RiPauseLine,
-  RiPlayLine,
-  RiRestartLine,
-  RiSettings3Line,
-  RiTodoLine,
-} from '@/assets/icons'
-import emojis from '@/assets/json/emojis.json'
-import quotes from '@/assets/json/quotes.json'
 
+const pipOn = ref(false)
 const tip = ref(true)
 const mode = ref('pomodoro') // ...pomodoro | short | long |...
 const isCountdown = ref(false)
@@ -316,6 +341,14 @@ function handleFinish() {
   remain.value = duration.value
 }
 
+async function showPip() {
+  if (!('documentPictureInPicture' in window)) {
+    alert("Your Browser doesn't support PiP!")
+    return
+  }
+  pipOn.value = !pipOn.value
+}
+
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)]
 }
@@ -361,8 +394,23 @@ function unlockSound() {
   background-color: var(--bgc1);
   font-family: 'Delius', cursive;
   color: var(--font1);
+  position: relative;
 }
+
+#pip {
+  position: absolute;
+  top: 0.4%;
+  left: 0.2%;
+  transition:
+    color 0.2s,
+    filter 0.2s;
+}
+#pip:hover {
+  filter: brightness(1.25);
+}
+
 #Pomodoro {
+  box-shadow: #111 0 0 0.4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -426,9 +474,11 @@ function unlockSound() {
   width: 6rem;
   padding: 0.4rem 0;
   transition: background-color 0.2s;
+  background-color: var(--theme1);
   border: none;
   font-size: 1.2rem;
   font-weight: 900;
+  color: var(--bgc2);
 }
 #Pomodoro button:disabled {
   background-color: var(--theme2);
@@ -439,6 +489,7 @@ function unlockSound() {
 }
 
 nav {
+  box-shadow: #111 0 0 0.4rem;
   display: flex;
   grid-area: nav;
   padding: 0.2rem;
@@ -466,6 +517,7 @@ nav {
 }
 
 section {
+  box-shadow: #111 0 0 0.4rem;
   grid-area: section;
   min-height: 0;
   margin-top: 0.5rem;
@@ -481,5 +533,56 @@ footer {
 .colon {
   transition: opacity 0.1s;
   text-shadow: 0 0 2px currentColor;
+}
+@media (max-width: 768px) {
+  #body {
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'Pomodoro'
+      'section'
+      'nav';
+    padding: 0;
+    background-color: var(--bgc2);
+  }
+  #Pomodoro,
+  nav,
+  section {
+    box-shadow: none;
+    margin: 0;
+    border: 0;
+  }
+  #Pomodoro {
+    padding: 0.4rem;
+  }
+  #current {
+    height: 1.5rem;
+    text-align: start;
+  }
+  #countClock {
+    width: 60%;
+  }
+  #pip,
+  footer {
+    display: none;
+  }
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bgc1: #ddd;
+    --bgc2: #fff;
+    --bgc3: #eee;
+    --font1: #000;
+    --font2: #333;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bgc1: #21252b;
+    --bgc2: #282c34;
+    --bgc3: #2f343e;
+    --font1: #abb2bf;
+    --font2: #999;
+  }
 }
 </style>

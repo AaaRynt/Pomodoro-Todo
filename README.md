@@ -9,8 +9,6 @@
 A Pomodoro + To-Do focus tool designed for **real, long-term use**.With feature-complete with elegant UI/UX, optimized for cross-device compatibility and diverse usage scenarios.
 Live demo: <https://aaarynt.github.io/Pomodoro-Todo/>
 
----
-
 ## Overview
 
 There are plenty of Pomodoro timers and countless To-Do apps, but they are often disconnected:
@@ -22,8 +20,6 @@ This project **binds the two together**:
 
 > Every focus session is tied to a specific task
 > Every completed task has a real, measurable time cost
-
----
 
 ## Features
 
@@ -50,8 +46,6 @@ This project **binds the two together**:
   - Customizable accent colors
   - Responsive layout, optimized for different window or screen sizes
 
----
-
 ## UI Preview
 
 - Five theme colors
@@ -64,8 +58,6 @@ This project **binds the two together**:
   ![table](/Image/table.png)
 - Mobile interface
   ![phone](/Image/Phone.jpg)
-
----
 
 ## Tech Stack
 
@@ -81,8 +73,6 @@ This project **binds the two together**:
   - [Responsive web design](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design)
   - [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme)
 
----
-
 ## Installation & Development
 
 ```bash
@@ -93,8 +83,6 @@ npm run dev
 ```
 
 Open <http://localhost:5173> in your browser.
-
----
 
 ## ⚠️ Notes on Deployment
 
@@ -112,8 +100,6 @@ or navigate using in-app links.
 
 > UI 默认使用英文，词汇极简，图标直观。
 > 如有中文需求，欢迎 [PR](https://github.com/AaaRynt/Pomodoro-Todo/pulls) / [Issue](https://github.com/AaaRynt/Pomodoro-Todo/issues)
-
----
 
 ## License
 

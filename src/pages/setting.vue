@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="button-control" style="width: 50%">
-        <button class="mode" id="isDark" @click="setting.isDark = !setting.isDark">
+        <button type="button" class="mode" id="isDark" @click="setting.isDark = !setting.isDark">
           <div
             id="moon"
             :style="{
@@ -43,11 +43,11 @@
             :style="{ height: setting.isDark ? '0px' : '48px' }"
           ></small>
         </button>
-        <button class="mode" @click="toggleSound">
+        <button type="button" class="mode" @click="toggleSound">
           <RiVolumeUpFill :style="{ display: setting.sound ? 'block' : 'none' }" />
           <RiVolumeMuteLine :style="{ display: setting.sound ? 'none' : 'block' }" />
         </button>
-        <button class="mode" @click="setting.notify = !setting.notify">
+        <button type="button" class="mode" @click="setting.notify = !setting.notify">
           <RiNotification4Fill :style="{ display: setting.notify ? 'block' : 'none' }" />
           <RiNotificationOffLine :style="{ display: setting.notify ? 'none' : 'block' }" />
         </button>
@@ -120,7 +120,7 @@
     </fieldset>
 
     <button type="reset" class="page-button" @click="reset">
-      <RiRefreshLine />&nbspReset localStorage
+      <RiRefreshLine />&nbspReset Setting
     </button>
   </div>
 </template>
@@ -168,6 +168,7 @@ function reset() {
   justify-content: space-evenly;
   align-items: center;
   gap: 0;
+  position: relative;
   overflow-y: auto;
   background-color: var(--bgc2);
   border-radius: 1rem;
@@ -179,6 +180,9 @@ fieldset {
   border: var(--font2) solid 1px;
   border-radius: 1rem;
 }
+br {
+  user-select: none;
+}
 #theme {
   justify-content: space-between;
 }
@@ -189,35 +193,13 @@ fieldset {
 }
 #color {
   -webkit-background-clip: text;
-  background: linear-gradient(105deg, tomato, sandybrown, seagreen, skyblue, violet);
+  background: linear-gradient(75deg, tomato, sandybrown, seagreen, skyblue, violet);
   background-clip: text;
   font-size: 1.2rem;
   color: transparent;
 }
-.mode {
-  all: unset;
-  height: 50px;
-  width: 50px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-  transition:
-    transform 0.6s,
-    background-color 0.4s;
-  cursor: pointer;
-}
-.mode:not(#isDark):hover {
-  background-color: var(--bgc3);
-}
 #isDark:hover {
   transform: translateX(-6.25%) rotate(-22.5deg);
-}
-.prompt {
-  width: 40px;
-  height: 40px;
 }
 #moon {
   transform-origin: right bottom;

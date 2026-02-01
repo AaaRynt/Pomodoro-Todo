@@ -47,7 +47,7 @@
         <RiUpload2Line />&nbspExport CSV
       </button>
       <button type="reset" class="page-button" @click="reset">
-        <RiRefreshLine />&nbspReset localStorage
+        <RiRefreshLine />&nbspReset History
       </button>
     </div>
   </div>
@@ -115,6 +115,7 @@ function reset() {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  position: relative;
   overflow-y: auto;
   padding: 1rem;
   background-color: var(--bgc2);

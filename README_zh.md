@@ -9,8 +9,6 @@
 一个为**真实长期使用**而设计的 番茄钟 + To-Do 专注工具。功能完善、UI&UX美观，适配不同设备与使用场景
 项目地址：<https://aaarynt.github.io/Pomodoro-Todo/>
 
----
-
 ## 项目简介
 
 市面上有很多番茄钟，也有很多 To-Do 应用，但两者往往是割裂的：
@@ -22,8 +20,6 @@
 
 > 每一次专注，都对应一个具体的任务
 > 每一个完成的任务，都有真实的时间成本。
-
----
 
 ## 主要功能
 
@@ -49,8 +45,6 @@
   - 可自定义主题色
   - 响应式布局，自适应不同窗口或屏幕尺寸
 
----
-
 ## 界面预览
 
 - 五种主题色
@@ -63,8 +57,6 @@
   ![table](/Image/table.png)
 - 手机端界面
   ![phone](/Image/Phone.jpg)
-
----
 
 ## 技术栈
 
@@ -80,8 +72,6 @@
   - [响应式布局](https://developer.mozilla.org/zh-CN/docs/Learn_web_development/Core/CSS_layout/Responsive_Design)
   - [prefers-color-scheme](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme)
 
----
-
 ## 安装与运行
 
 ```bash
@@ -92,8 +82,6 @@ npm run dev
 ```
 
 浏览器打开 <http://localhost:5173> 查看效果。
-
----
 
 ## ⚠️ 注意事项
 
@@ -110,8 +98,6 @@ npm run dev
 
 > UI 默认使用英文，词汇极简，图标直观。
 > 如有中文需求，欢迎 [PR](https://github.com/AaaRynt/Pomodoro-Todo/pulls) / [Issue](https://github.com/AaaRynt/Pomodoro-Todo/issues)
-
----
 
 ## License
 

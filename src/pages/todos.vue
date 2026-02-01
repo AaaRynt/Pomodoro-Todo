@@ -8,7 +8,7 @@
         maxlength="24"
         @keydown.enter="add"
       />
-      <button @click="add" id="add" type="button">
+      <button type="button" @click="add" id="add">
         <RiPlayListAddLine />
       </button>
     </div>
@@ -101,6 +101,7 @@ function remove(todo) {
   padding: 1rem;
   background-color: var(--bgc2);
   border-radius: 1rem;
+  position: relative;
 }
 #control {
   display: flex;
@@ -168,11 +169,6 @@ span {
 }
 .delete {
   order: 5;
-}
-button {
-  background-color: transparent;
-  border: none;
-  color: var(--font1);
 }
 button:hover {
   color: var(--theme1);
