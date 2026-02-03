@@ -1,0 +1,128 @@
+@font-face {
+  src: url('../assets/fonts/Aldrich-Regular.ttf') format('truetype');
+  font-family: 'Aldrich';
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  src: url('../assets/fonts/CONSOLA.TTF') format('truetype');
+  font-family: 'Consolas';
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  src: url('../assets/fonts/Delius-Regular.ttf') format('truetype');
+  font-family: 'Delius';
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  src: url('../assets/fonts/SEGOEUI.TTF') format('truetype');
+  font-family: 'Segoe UI';
+  font-style: normal;
+  font-weight: normal;
+}
+
+:root {
+  --bgc1: #21252b;
+  --bgc2: #282c34;
+  --bgc3: #2f343e;
+  --font1: #abb2bf;
+  --font2: #999;
+  --theme1: tomato;
+  --theme2: color-mix(in srgb, var(--theme1) 80%, #000);
+  --theme3: color-mix(in srgb, var(--theme1) 60%, #000);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition:
+    background-color 1s,
+    border 0.5s,
+    color 0.5s;
+}
+::selection {
+  background-color: var(--theme1);
+  color: var(--bgc2);
+}
+.label-select::selection {
+  background-color: var(--theme3);
+  color: currentColor;
+}
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+::-webkit-scrollbar-track {
+  background: var(--bgc3);
+  border-radius: 0rem 2rem 2rem 0rem;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--font2);
+  border-radius: 0rem 2rem 2rem 0rem;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--theme1);
+}
+[title] {
+  cursor: pointer;
+}
+
+svg {
+  fill: currentColor;
+  width: 1.25rem;
+  height: 1.25rem;
+  vertical-align: middle;
+}
+button {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
+  font-family: 'Delius', cursive;
+  color: var(--font1);
+}
+.mono {
+  letter-spacing: 1px;
+  font-family: 'Segoe UI', 'SF Mono', Menlo, Monaco, Consolas, monospace;
+}
+.mode {
+  all: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  transition:
+    transform 0.6s,
+    background-color 0.4s;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.mode:not(#isDark):hover {
+  background-color: var(--bgc3);
+}
+.prompt {
+  width: 40px;
+  height: 40px;
+}
+.button-control {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 90%;
+}
+.page-button {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--font2);
+}
+.page-button:hover {
+  background-color: var(--bgc3);
+  border: 1px solid var(--theme1);
+  color: var(--theme1);
+}

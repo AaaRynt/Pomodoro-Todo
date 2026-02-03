@@ -1,0 +1,53 @@
+#body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0.5rem;
+  background-color: var(--bgc2);
+  cursor: not-allowed;
+  font-family: 'Delius', cursive;
+  color: var(--font1);
+}
+#pause {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  opacity: 0.5;
+  transform: translate(-50%,-50%);
+  width: 80%;
+  height: 80%;
+  cursor: not-allowed;
+  color: var(--font2);
+}
+#container {
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 3rem;
+}
+.countdown {
+  position: absolute;
+  transition: clipPath 1s linear;
+  font-size: 3rem;
+  font-family: Courier;
+  font-weight: 900;
+  line-height: 2rem;
+}
+#countdown1 {
+  z-index: 1;
+  color: var(--theme2);
+}
+#countdown2 {
+  z-index: 2;
+  color: var(--theme1);
+}
+#todo-name {
+  transition: color 0.5s;
+  font-weight: 900;
+  word-break: break-word;
+}
