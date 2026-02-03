@@ -1,3 +1,28 @@
+@font-face {
+  src: url('../assets/fonts/Aldrich-Regular.ttf') format('truetype');
+  font-family: 'Aldrich';
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  src: url('../assets/fonts/CONSOLA.TTF') format('truetype');
+  font-family: 'Consolas';
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  src: url('../assets/fonts/Delius-Regular.ttf') format('truetype');
+  font-family: 'Delius';
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  src: url('../assets/fonts/SEGOEUI.TTF') format('truetype');
+  font-family: 'Segoe UI';
+  font-style: normal;
+  font-weight: normal;
+}
+
 :root {
   --bgc1: #21252b;
   --bgc2: #282c34;
@@ -61,7 +86,8 @@ button {
   color: var(--font1);
 }
 .mono {
-  font-family: 'Segoe UI', 'SF Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+  letter-spacing: 1px;
+  font-family: 'Segoe UI', 'SF Mono', Menlo, Monaco, Consolas, monospace;
 }
 .mode {
   all: unset;

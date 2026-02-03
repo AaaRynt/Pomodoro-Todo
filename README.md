@@ -23,10 +23,11 @@ This project **binds the two together**:
 
 ## Features
 
-- Automatic switching between _Pomodoro_ / _Short Break_ / _Long Break_
 - Uses `Date.now()` **timestamp-based** calculation for precise remaining time, instead of decrementing via `setInterval()`.This fundamentally avoids inaccuracies caused by browser [browser background throttling(Timer Throttling)](https://developer.chrome.com/blog/timer-throttling-in-chrome-88).
+- Automatic switching between _Pomodoro_ / _Short Break_ / _Long Break_
 - Manual control during timing: _Pause_ / _Again_ / _Finish_
 - _To-Do_ management (_active_ / _pend_ / _completed_)
+- Support Picture-in-picture (PiP) feature
 - **Historical statistics and completion records**
   - Total Pomodoro sessions completed
   - Total focus duration
@@ -66,8 +67,10 @@ This project **binds the two together**:
 - [Vite](https://vite.dev/)
 - Web APIs
   - [Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
-  - [Notification API](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API)
   - [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+  - [Notification API](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API)
+  - [Picture-in-Picture API](https://developer.mozilla.org/en-US/docs/Web/API/Document_Picture-in-Picture_API)
+
 - CSS
   - [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/--*)
   - [Responsive web design](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design)

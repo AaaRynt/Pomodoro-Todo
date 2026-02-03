@@ -27,7 +27,7 @@
           <th title="✔" colspan="2">
             <RiCheckDoubleLin />
             <span class="media-text">&nbspTo-Do Names&nbsp</span>
-            <RiCheckDoubleLin />
+            <RiCheckDoubleLin class="media-text" />
           </th>
           <th title="⏲"><span class="media-text">Add&nbsp</span><RiTimerLine /></th>
           <th title="⏰"><span class="media-text">Done&nbsp</span><RiAlarmLine /></th>

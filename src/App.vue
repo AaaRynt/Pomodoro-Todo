@@ -1,33 +1,15 @@
 <template>
-  <!-- <pre style="position: absolute; background: #444; opacity: 0.5; color: #fff; font-family: monospace; z-index: 999; bottom: 0; right: 0;">
-pipOn: {{ pipOn }}
-tip: {{ tip }}
-mode: {{ mode }}
-isCountdown: {{ isCountdown }}
-hasStarted: {{ hasStarted }}
-pomodoroCount: {{ pomodoroCount }}
-duration:{{ duration }}
-remain: {{ remain }}
-{{ pomodoroCount }}/{{ setting.interval }}
-endAt: {{ endAt }}
-lastTickAt: {{ lastTickAt }}
-{{ activeTodo }}
-{{ setting }}
-progress:{{ progress.toFixed(2) }}
-timer: {{ timer }}
-countdownTimer: {{ countdownTimer }}
-</pre> -->
   <div id="body">
     <button
-      id="pip"
-      @click="showPip"
+      id="PiP"
+      @click="showPiP"
       :style="{
-        cursor: pipOn ? 'pointer' : 'context-menu',
-        color: pipOn ? 'var(--theme1)' : 'var(--font1)',
+        cursor: PiPOn ? 'pointer' : 'context-menu',
+        color: PiPOn ? 'var(--theme1)' : 'var(--font1)',
       }"
     >
-      <RiPictureInPicture2Line :style="{ display: pipOn ? 'none' : 'block' }" />
-      <RiPictureInPictureExitFill :style="{ display: pipOn ? 'block' : 'none' }" />
+      <RiPictureInPicture2Line :style="{ display: PiPOn ? 'none' : 'block' }" />
+      <RiPictureInPictureExitFill :style="{ display: PiPOn ? 'block' : 'none' }" />
     </button>
     <div id="Pomodoro">
       <div id="current" :style="{ fontSize: activeTodo?.name || tip ? '1.5rem' : '3rem' }">
@@ -63,7 +45,7 @@ countdownTimer: {{ countdownTimer }}
           @click="Start"
           :disabled="!activeTodo?.name && mode === 'pomodoro'"
         >
-          <RiPlayLine />{{ mode === 'pomodoro' ? 'START' : 'RELAX' }}
+          <RiPlayLine />{{ mode === 'pomodoro' ? 'Start' : 'Relax' }}
         </button>
         <button
           type="button"
@@ -118,19 +100,10 @@ countdownTimer: {{ countdownTimer }}
 </template>
 
 <script setup>
-import {
-  computed,
-  createApp,
-  onBeforeUnmount,
-  onMounted,
-  onUnmounted,
-  ref,
-  reactive,
-  watch,
-} from 'vue'
-import pomodoroMp3 from '@/assets/audio/pencil_check_mark_1-88805.mp3'
-import shortMp3 from '@/assets/audio/ding-126626.mp3'
-import longMp3 from '@/assets/audio/ding-47489.mp3'
+import { computed, createApp, onMounted, onUnmounted, ref, reactive, watch } from 'vue'
+import pomodoroMp3 from '/assets/audios/pencil_check_mark_1-88805.mp3'
+import shortMp3 from '/assets/audios/ding-126626.mp3'
+import longMp3 from '/assets/audios/ding-47489.mp3'
 import {
   RiFileChartLine,
   RiForwardEndLine,
@@ -142,9 +115,8 @@ import {
   RiSettings3Line,
   RiTodoLine,
 } from '@/assets/icons'
-import emojis from '@/assets/json/emojis.json'
 import quotes from '@/assets/json/quotes.json'
-import pipApp from './pages/pipApp.vue'
+import PiPApp from './pages/PiPApp.vue'
 import { setting } from '@/store/setting'
 import {
   todos,
@@ -155,10 +127,13 @@ import {
   breakTotal,
   earlyCompletions,
 } from '@/store/todo'
+import { displayContent, tip, pick } from '@/store/displayContent'
+// import { Start, Again, Pause, Finish } from '@/store/pomodoro'
 import { getTimeInfo } from '@/utils/getTimeInfo'
 
-const pipOn = ref(false)
-const tip = ref(true)
+const PiPOn = ref(false)
+const PiPWindow = ref(null)
+const PiPApp_Instance = ref(null)
 const mode = ref('pomodoro') // ...pomodoro | short | long |...
 const isCountdown = ref(false)
 const hasStarted = ref(false)
@@ -186,16 +161,6 @@ const sounds = {
 let timer = null
 let countdownTimer = null
 
-const displayContent = computed(() => {
-  if (activeTodo.value) {
-    tip.value = false
-    return activeTodo.value.name
-  } else if (tip.value) {
-    return 'Select one todo to start.'
-  } else {
-    return pick(emojis)
-  }
-})
 const result = computed(() => {
   const min = Math.floor(remain.value / 60)
     .toString()
@@ -228,7 +193,21 @@ onMounted(() => {
 onUnmounted(() => {
   clearInterval(timer)
   clearInterval(countdownTimer)
+  // 清理 PiP 窗口
+  if (PiPWindow.value) {
+    PiPWindow.value.close()
+    PiPWindow.value = null
+  }
+  if (PiPApp_Instance.value) {
+    try {
+      PiPApp_Instance.value.unmount()
+    } catch (e) {
+      console.error('Error unmounting PiPApp:', e)
+    }
+    PiPApp_Instance.value = null
+  }
 })
+
 watch(
   () => [mode.value, setting.pomodoro, setting.short, setting.long],
   () => {
@@ -255,11 +234,14 @@ watch(todos, () => {
 // Timing implementation Remaining time is calculated using Date.now() and a target timestamp, rather than decrementing via setInterval(() => { remain.value--; }, 1000);. This fundamentally avoids inaccuracies caused by browser browser background throttling(Timer Throttling)."../README.md"
 function Start() {
   if ((!activeTodo.value?.name && mode.value === 'pomodoro') || isCountdown.value) return
-  isCountdown.value = true
-  hasStarted.value = true
 
-  lastTickAt.value = Date.now()
-  endAt.value = lastTickAt.value + duration.value * 1000
+  endAt.value = Date.now() + remain.value * 1000
+  if (!hasStarted.value) {
+    lastTickAt.value = Date.now()
+    hasStarted.value = true
+  }
+
+  isCountdown.value = true
   countdownTimer = setInterval(() => {
     const now = Date.now()
     const diff = Math.max(0, Math.floor((endAt.value - now) / 1000))
@@ -276,6 +258,7 @@ function Start() {
     if (diff === 0) {
       Pause()
       hasStarted.value = false
+      lastTickAt.value = 0
       if (mode.value === 'pomodoro') pomodoroTotal.value++
       handleFinish()
     }
@@ -286,6 +269,7 @@ function Start() {
 function Again() {
   Pause()
   hasStarted.value = false
+  lastTickAt.value = 0
   switch (mode.value) {
     case 'pomodoro':
       duration.value = setting.pomodoro * 60
@@ -302,11 +286,11 @@ function Again() {
 function Pause() {
   clearInterval(countdownTimer)
   isCountdown.value = false
-  lastTickAt.value = 0
 }
 function Finish() {
   Pause()
   hasStarted.value = false
+  lastTickAt.value = 0
   remain.value = 0
   earlyCompletions.value++
   if (mode.value === 'pomodoro') pomodoroTotal.value++
@@ -341,17 +325,100 @@ function handleFinish() {
   remain.value = duration.value
 }
 
-async function showPip() {
+// ===|-GENERATE by Claude Haiku 4.5-|===
+async function showPiP() {
   if (!('documentPictureInPicture' in window)) {
     alert("Your Browser doesn't support PiP!")
     return
   }
-  pipOn.value = !pipOn.value
+  if (PiPWindow.value) {
+    PiPWindow.value.close()
+    return
+  }
+
+  try {
+    const PiPWin = await window.documentPictureInPicture.requestWindow({
+      width: 200,
+      height: 120,
+    })
+
+    PiPWindow.value = PiPWin
+    PiPOn.value = true
+
+    const linkElement = PiPWin.document.createElement('link')
+    linkElement.rel = 'stylesheet'
+    linkElement.href = import.meta.env.BASE_URL + '/css/global.css'
+    PiPWin.document.head.appendChild(linkElement)
+    const PiPLinkElement = PiPWin.document.createElement('link')
+    PiPLinkElement.rel = 'stylesheet'
+    PiPLinkElement.href = import.meta.env.BASE_URL + '/css/PiP.css'
+    PiPWin.document.head.appendChild(PiPLinkElement)
+
+    const styleElement = PiPWin.document.createElement('style')
+    styleElement.textContent = `
+      #body {
+        background-color: var(--bgc2);
+        color: var(--font1);
+      }
+      #countdown1 {
+        color: var(--theme3);
+      }
+      #countdown2 {
+        color: var(--theme1);
+      }
+    `
+    PiPWin.document.head.appendChild(styleElement)
+    PiPWin.document.body.style.cssText = `
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height:100vh;
+    `
+    const mountPoint = PiPWin.document.createElement('div')
+    mountPoint.style.cssText = `
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    `
+    PiPWin.document.body.appendChild(mountPoint)
+
+    PiPApp_Instance.value = createApp(PiPApp)
+    PiPApp_Instance.value.provide('isCountdown', isCountdown)
+    PiPApp_Instance.value.provide('remain', remain)
+    PiPApp_Instance.value.provide('duration', duration)
+    PiPApp_Instance.value.provide('PiPWindow', PiPWin)
+    PiPApp_Instance.value.mount(mountPoint)
+
+    const handlePiPClose = () => {
+      PiPOn.value = false
+      if (PiPApp_Instance.value) {
+        try {
+          PiPApp_Instance.value.unmount()
+        } catch (e) {
+          console.error('Error unmounting PiPApp:', e)
+        }
+        PiPApp_Instance.value = null
+      }
+      PiPWindow.value = null
+      PiPWin.removeEventListener('pagehide', handlePiPClose)
+    }
+    PiPWin.addEventListener('pagehide', handlePiPClose)
+  } catch (error) {
+    console.error('Failed to open PiP:', error)
+    PiPOn.value = false
+    PiPWindow.value = null
+    if (PiPApp_Instance.value) {
+      try {
+        PiPApp_Instance.value.unmount()
+      } catch (e) {
+        console.error('Error unmounting PiPApp:', e)
+      }
+      PiPApp_Instance.value = null
+    }
+  }
 }
 
-function pick(arr) {
-  return arr[Math.floor(Math.random() * arr.length)]
-}
 function updateTime() {
   Object.assign(time, getTimeInfo())
   time.blink = !time.blink
@@ -397,7 +464,7 @@ function unlockSound() {
   position: relative;
 }
 
-#pip {
+#PiP {
   position: absolute;
   top: 0.4%;
   left: 0.2%;
@@ -405,7 +472,7 @@ function unlockSound() {
     color 0.2s,
     filter 0.2s;
 }
-#pip:hover {
+#PiP:hover {
   filter: brightness(1.25);
 }
 
@@ -466,7 +533,7 @@ function unlockSound() {
   background-color: var(--bgc3);
   border-radius: 50%;
   font-size: clamp(1rem, 20cqw, 4rem);
-  font-family: Consolas, 'Courier New', monospace;
+  font-family: Courier;
   font-weight: 900;
   color: var(--theme1);
 }
@@ -562,7 +629,7 @@ footer {
   #countClock {
     width: 60%;
   }
-  #pip,
+  #PiP,
   footer {
     display: none;
   }

@@ -127,7 +127,7 @@
 
 <script setup>
 import { setting } from '@/store/setting'
-import appearance from '@/assets/audio/appearance-effect-6733.mp3'
+import appearance from '/assets/audios/appearance-effect-6733.mp3'
 import {
   RiRefreshLine,
   RiNotification4Fill,

@@ -7,6 +7,7 @@ import RiFileChartLine from './RiFileChartLine.vue'
 import RiForwardEndLine from './RiForwardEndLine.vue'
 import RiNotification4Fill from './RiNotification4Fill.vue'
 import RiNotificationOffLine from './RiNotificationOffLine.vue'
+import RiPauseCircleLine from './RiPauseCircleLine.vue'
 import RiPauseLine from './RiPauseLine.vue'
 import RiPictureInPicture2Line from './RiPictureInPicture2Line.vue'
 import RiPictureInPictureExitFill from './RiPictureInPictureExitFill.vue'
@@ -35,6 +36,7 @@ export {
   RiForwardEndLine,
   RiNotification4Fill,
   RiNotificationOffLine,
+  RiPauseCircleLine,
   RiPauseLine,
   RiPictureInPicture2Line,
   RiPictureInPictureExitFill,

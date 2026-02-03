@@ -48,7 +48,7 @@ import { ref } from 'vue'
 import { setting } from '@/store/setting'
 import { todos, completedTodos, activeTodo, earlyCompletions } from '@/store/todo'
 import { getTimeInfo } from '@/utils/getTimeInfo'
-import pomodoro from '@/assets/audio/pencil_check_mark_1-88805.mp3'
+import pomodoro from '/assets/audios/pencil_check_mark_1-88805.mp3'
 import { RiCheckLine, RiDeleteBinLine, RiPlayCircleLine, RiPlayListAddLine } from '@/assets/icons'
 
 const text = ref('')

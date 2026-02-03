@@ -23,10 +23,11 @@
 
 ## 主要功能
 
-- 自动切换 _番茄钟_ / _短休息_ / _长休息_
 - 使用 `Date.now()` 基于**时间戳**计算剩余时间，而非依赖 `setInterval()` 递减。从根本上避免浏览器[后台节流机制(Timer Throttling)](https://developer.chrome.com/blog/timer-throttling-in-chrome-88?hl=zh-cn)导致的计时不准问题。
+- 自动切换 _番茄钟_ / _短休息_ / _长休息_
 - 计时过程中可手动 _暂停_ / _重新开始_ / _完成_
 - _To-Do_ 管理（_进行中_ / _待处理_ / _已完成_）
+- 支持画中画（PiP, Picture-in-Picture）
 - **历史数据统计与完成记录展示**
   - 番茄钟累计完成次数
   - 专注总时长
@@ -36,7 +37,7 @@
 - 完成的 _To-Do_ 支持导出 `.CSV`
 - 使用 `localStorage` 本地存储，（重新加载页面不丢数据，可重置）
 - **提醒功能（可关闭）**
-  - 番茄、短休、长休[音效提醒](https://github.com/AaaRynt/Pomodoro-Todo/tree/main/src/assets/audio)
+  - 番茄、短休、长休[音效提醒](https://github.com/AaaRynt/Pomodoro-Todo/tree/main/public/assets/audio)
   - 桌面端通知支持
   - 随机 [emoji](https://github.com/AaaRynt/Pomodoro-Todo/blob/main/src/assets/json/emojis.json)、[提示语](https://github.com/AaaRynt/Pomodoro-Todo/blob/main/src/assets/json/quotes.json)
 - 计时时长、休息间隔自定义
@@ -65,8 +66,9 @@
 - [Vite](https://cn.vite.dev/)
 - Web APIs
   - [Audio API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Audio_API)
-  - [Notification API](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API)
   - [localStorage](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/localStorage)
+  - [Notification API](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API)
+  - [Picture-in-Picture API](https://developer.mozilla.org/zh-CN/docs/Web/API/Document_Picture-in-Picture_API)
 - CSS
   - [CSS 变量](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Reference/Properties/--*)
   - [响应式布局](https://developer.mozilla.org/zh-CN/docs/Learn_web_development/Core/CSS_layout/Responsive_Design)
