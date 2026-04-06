@@ -16,7 +16,7 @@
             class="label-select"
             :style="{
               color: value,
-              textDecoration: value === setting.theme ? `underline solid ${value}` : `none`,
+              textDecoration: value === setting.theme ? `underline solid ${value}` : `none`
             }"
             >{{ value.charAt(0).toUpperCase() + value.slice(1) }}</label
           >
@@ -27,9 +27,8 @@
           <div
             id="moon"
             :style="{
-              transform: setting.isDark
-                ? 'scale(1) translate(30%, -30%)'
-                : 'scale(0) translate(30%, -30%)',
+              transform:
+                setting.isDark ? 'scale(1) translate(30%, -30%)' : 'scale(0) translate(30%, -30%)'
             }"
           ></div>
           <div
@@ -133,7 +132,7 @@ import {
   RiNotification4Fill,
   RiNotificationOffLine,
   RiVolumeMuteLine,
-  RiVolumeUpFill,
+  RiVolumeUpFill
 } from '@/assets/icons'
 
 const colors = ['tomato', 'sandybrown', 'seagreen', 'skyblue', 'violet']

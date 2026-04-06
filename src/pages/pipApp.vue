@@ -62,7 +62,7 @@ onMounted(() => {
     })
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['style'],
+      attributeFilter: ['style']
     })
     const handleClose = () => {
       observer.disconnect()

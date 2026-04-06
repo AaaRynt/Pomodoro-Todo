@@ -53,5 +53,5 @@ export {
   RiUpload2Line,
   RiVerifiedBadgeLine,
   RiVolumeMuteLine,
-  RiVolumeUpFill,
+  RiVolumeUpFill
 }

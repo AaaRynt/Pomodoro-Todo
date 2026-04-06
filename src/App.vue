@@ -5,7 +5,7 @@
       @click="showPiP"
       :style="{
         cursor: PiPOn ? 'pointer' : 'context-menu',
-        color: PiPOn ? 'var(--theme1)' : 'var(--font1)',
+        color: PiPOn ? 'var(--theme1)' : 'var(--font1)'
       }"
     >
       <RiPictureInPicture2Line :style="{ display: PiPOn ? 'none' : 'block' }" />
@@ -19,16 +19,16 @@
         <div
           id="countClock"
           :style="{
-            background: `conic-gradient(var(--theme3) 0% ${progress}%,var(--theme1) ${progress}% 100%)`,
+            background: `conic-gradient(var(--theme3) 0% ${progress}%,var(--theme1) ${progress}% 100%)`
           }"
         >
           <div
             id="pomodoroClock"
             :style="{
               background:
-                mode === 'long'
-                  ? 'var(--theme2)'
-                  : `conic-gradient(var(--theme2) 0% ${((pomodoroCount % setting.interval) * 100) / setting.interval}%,var(--bgc3) ${((pomodoroCount % setting.interval) * 100) / setting.interval}% 100%)`,
+                mode === 'long' ? 'var(--theme2)' : (
+                  `conic-gradient(var(--theme2) 0% ${((pomodoroCount % setting.interval) * 100) / setting.interval}%,var(--bgc3) ${((pomodoroCount % setting.interval) * 100) / setting.interval}% 100%)`
+                )
             }"
           >
             <div id="countdown" class="mono">{{ result }}</div>
@@ -40,7 +40,7 @@
           type="button"
           :style="{
             display: isCountdown ? 'none' : 'flex',
-            disabled: !activeTodo?.name && mode === 'pomodoro',
+            disabled: !activeTodo?.name && mode === 'pomodoro'
           }"
           @click="Start"
           :disabled="!activeTodo?.name && mode === 'pomodoro'"
@@ -113,7 +113,7 @@ import {
   RiPlayLine,
   RiRestartLine,
   RiSettings3Line,
-  RiTodoLine,
+  RiTodoLine
 } from '@/assets/icons'
 import quotes from '@/assets/json/quotes.json'
 import PiPApp from './pages/PiPApp.vue'
@@ -125,7 +125,7 @@ import {
   pomodoroTotal,
   focusTotal,
   breakTotal,
-  earlyCompletions,
+  earlyCompletions
 } from '@/store/todo'
 import { displayContent, tip, pick } from '@/store/displayContent'
 // import { Start, Again, Pause, Finish } from '@/store/pomodoro'
@@ -151,12 +151,12 @@ const time = reactive({
   hour: '00',
   minute: '00',
   second: '00',
-  blink: true,
+  blink: true
 })
 const sounds = {
   pomodoro: new Audio(pomodoroMp3),
   short: new Audio(shortMp3),
-  long: new Audio(longMp3),
+  long: new Audio(longMp3)
 }
 let timer = null
 let countdownTimer = null
@@ -215,11 +215,11 @@ watch(
     const map = {
       pomodoro: setting.pomodoro,
       short: setting.short,
-      long: setting.long,
+      long: setting.long
     }
     duration.value = map[mode.value] * 60
     remain.value = duration.value
-  },
+  }
 )
 watch(todos, () => {
   if (activeTodo.value && !todos.value.some((t) => t.addTime === activeTodo.value.addTime)) {
@@ -339,7 +339,7 @@ async function showPiP() {
   try {
     const PiPWin = await window.documentPictureInPicture.requestWindow({
       width: 200,
-      height: 120,
+      height: 120
     })
 
     PiPWindow.value = PiPWin

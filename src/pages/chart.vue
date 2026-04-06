@@ -59,7 +59,7 @@ import {
   pomodoroTotal,
   focusTotal,
   breakTotal,
-  earlyCompletions,
+  earlyCompletions
 } from '@/store/todo'
 import {
   RiAlarmLine,
@@ -70,7 +70,7 @@ import {
   RiTimerFlashLine,
   RiTimerLine,
   RiUpload2Line,
-  RiVerifiedBadgeLine,
+  RiVerifiedBadgeLine
 } from '@/assets/icons'
 
 function totalTime(sec) {
