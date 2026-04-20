@@ -35,9 +35,9 @@ watch(
         pomodoroTotal: pomodoroTotal.value,
         focusTotal: focusTotal.value,
         breakTotal: breakTotal.value,
-        earlyCompletions: earlyCompletions.value
-      })
+        earlyCompletions: earlyCompletions.value,
+      }),
     )
   },
-  { deep: true }
+  { deep: true },
 )

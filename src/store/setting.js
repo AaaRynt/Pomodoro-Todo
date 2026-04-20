@@ -9,7 +9,7 @@ const defaultSetting = {
   pomodoro: 25,
   short: 5,
   long: 20,
-  interval: 4
+  interval: 4,
 }
 let initial = { ...defaultSetting }
 
@@ -34,5 +34,5 @@ watch(
     document.documentElement.style.setProperty('--font2', setting.isDark ? '#999' : '#333')
     localStorage.setItem(STORAGE_KEY, JSON.stringify(setting))
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 )

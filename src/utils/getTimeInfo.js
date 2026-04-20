@@ -9,6 +9,6 @@ export function getTimeInfo() {
     day: week[now.getDay()],
     hour: now.getHours().toString().padStart(2, '0'),
     minute: now.getMinutes().toString().padStart(2, '0'),
-    second: now.getSeconds().toString().padStart(2, '0')
+    second: now.getSeconds().toString().padStart(2, '0'),
   }
 }

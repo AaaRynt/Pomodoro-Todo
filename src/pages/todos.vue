@@ -15,7 +15,7 @@
     <p
       id="show"
       :style="{
-        display: todos.length ? 'none' : 'block'
+        display: todos.length ? 'none' : 'block',
       }"
     >
       No pending To-Do
@@ -25,7 +25,7 @@
       v-for="todo in todos"
       :key="todo.addTime"
       :style="{
-        outline: todo.addTime === activeTodo?.addTime ? 'var(--theme1) 2px solid' : 'none'
+        outline: todo.addTime === activeTodo?.addTime ? 'var(--theme1) 2px solid' : 'none',
       }"
     >
       <button type="button" class="ok" @click="complete(todo)">
@@ -65,7 +65,7 @@ function add() {
     addTime: info.timestamp,
     doneAt: '',
     doneTime: '',
-    name: text.value
+    name: text.value,
   })
   text.value = ''
 }

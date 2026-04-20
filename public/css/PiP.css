@@ -17,7 +17,7 @@
   top: 50%;
   left: 50%;
   opacity: 0.5;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   width: 80%;
   height: 80%;
   cursor: not-allowed;
